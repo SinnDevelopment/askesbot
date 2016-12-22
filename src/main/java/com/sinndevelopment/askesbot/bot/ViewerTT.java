@@ -2,6 +2,7 @@ package com.sinndevelopment.askesbot.bot;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sinndevelopment.askesbot.data.YAMLViewerHandler;
 import com.sinndevelopment.askesbot.points.Viewer;
 
 import java.io.BufferedReader;
@@ -17,7 +18,9 @@ import java.util.TimerTask;
 public class ViewerTT extends TimerTask
 {
     private AskesBot bot;
+
     private Map<String, Object> chatters = new HashMap<>();
+
     public ViewerTT(AskesBot bot)
     {
         this.bot = bot;
@@ -56,9 +59,14 @@ public class ViewerTT extends TimerTask
 
         viewers.addAll(mods);
 
+        bot.setModerators(mods);
+        bot.setViewers(viewers);
+
         for(String s : viewers)
         {
-            Viewer v = new Viewer(0, s, false);
+            Viewer v = YAMLViewerHandler.getViewer(s);
+            v.addPoint();
+            YAMLViewerHandler.saveViewer(v);
 
         }
     }

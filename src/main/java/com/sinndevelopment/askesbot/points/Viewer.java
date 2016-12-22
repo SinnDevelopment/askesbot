@@ -1,5 +1,7 @@
 package com.sinndevelopment.askesbot.points;
 
+import com.sinndevelopment.askesbot.data.YAMLViewerHandler;
+
 public class Viewer
 {
     private int count;
@@ -13,9 +15,10 @@ public class Viewer
 
     public Viewer(String username)
     {
-        this.count = 0;
+        Viewer viewer = YAMLViewerHandler.getViewer(username);
+        this.count = viewer.count;
         this.username = username;
-        this.subscriber = false;
+        this.subscriber = viewer.isSubscriber();
     }
     public Viewer(int count, String username, boolean subscriber)
     {
@@ -61,5 +64,11 @@ public class Viewer
     public void setCount(int count)
     {
         this.count = count;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Username: " + username + " Points: " + count + " Subscriber: " + subscriber;
     }
 }

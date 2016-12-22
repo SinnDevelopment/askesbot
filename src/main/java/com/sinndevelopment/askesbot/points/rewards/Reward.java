@@ -4,13 +4,18 @@ import com.sinndevelopment.askesbot.points.Viewer;
 
 public abstract class Reward
 {
-    protected String name;
-    protected int cost;
-
-    public Reward(String name, int cost)
-    {
-
-    }
+    private int cost;
+    private String name;
 
     public abstract boolean redeem(Viewer v, int count);
+
+    public int getCost()
+    {
+        return cost;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
 }

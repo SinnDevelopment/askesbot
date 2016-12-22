@@ -8,11 +8,6 @@ public class Viewer
     private String username;
     private boolean subscriber;
 
-    public Viewer()
-    {
-
-    }
-
     public Viewer(String username)
     {
         Viewer viewer = YAMLViewerHandler.getViewer(username);

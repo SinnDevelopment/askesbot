@@ -7,6 +7,7 @@ import org.jibble.pircbot.PircBot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 public class AskesBot extends PircBot
 {
@@ -14,7 +15,7 @@ public class AskesBot extends PircBot
 
     private List<String> moderators = new ArrayList<>();
     private List<String> viewers = new ArrayList<>();
-
+    private Timer timer = new Timer();
     private List<ChatCommand> commands = new ArrayList<>();
 
     public AskesBot()
@@ -23,6 +24,8 @@ public class AskesBot extends PircBot
         instance = this;
         commands.add(new AddPointsCommand());
         commands.add(new RedeemCommand());
+
+        timer.schedule(new ViewerTT(this), 0, 60*1000);
     }
 
     public static AskesBot getInstance()
@@ -68,4 +71,10 @@ public class AskesBot extends PircBot
     }
 
 
+    @Override
+    protected void onDisconnect()
+    {
+        super.onDisconnect();
+        timer.cancel();
+    }
 }

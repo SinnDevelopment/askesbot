@@ -1,3 +1,1 @@
-username: exampleUser
-count: 0
-subscriber: false
+{subscriber: false, count: 0, username: exampleUser}

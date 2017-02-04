@@ -10,7 +10,7 @@ public abstract class ChatCommand
     private String name;
     private String prefix = "_";
     private PermissionLevel permissionLevel;
-    private AskesBot bot = AskesBot.getInstance();
+    protected AskesBot bot = AskesBot.getInstance();
 
     public ChatCommand(String name, PermissionLevel permissionLevel)
     {
@@ -40,13 +40,14 @@ public abstract class ChatCommand
                 break;
         }
         String[] splitMess = message.split(" ");
-        List<String> args = Arrays.asList(Arrays.copyOfRange(splitMess, 1, splitMess.length-1));
+        List<String> args = Arrays.asList(Arrays.copyOfRange(splitMess, 0, splitMess.length));
+
         onCommand(channel, sender, login, hostname, args);
     }
 
     private void noPermission(String sender)
     {
-        bot.sendMessage("#askesienne", "@" + sender + " You do not have permission to use " + name);
+        bot.sendChannelMessage("@" + sender + " You do not have permission to use " + name);
     }
 
     protected abstract void onCommand(String channel, String sender, String login, String hostname, List<String> args);

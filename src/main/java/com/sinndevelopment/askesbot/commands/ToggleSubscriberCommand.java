@@ -1,0 +1,27 @@
+package com.sinndevelopment.askesbot.commands;
+
+import com.sinndevelopment.askesbot.data.YAMLViewerHandler;
+import com.sinndevelopment.askesbot.points.Viewer;
+
+import java.util.List;
+
+public class ToggleSubscriberCommand extends ChatCommand
+{
+    public ToggleSubscriberCommand()
+    {
+        super("togglesub", PermissionLevel.MODERATOR);
+    }
+
+    @Override
+    protected void onCommand(String channel, String sender, String login, String hostname, List<String> args)
+    {
+        if(args.size() ==1 )
+        {
+            return;
+        }
+        Viewer v = YAMLViewerHandler.getViewer(args.get(1));
+
+        v.setSubscriber(!v.isSubscriber());
+        bot.sendChannelMessage("@" + sender + " successfully set " + args.get(1) + "'s subscriber status to: " + v.isSubscriber());
+    }
+}

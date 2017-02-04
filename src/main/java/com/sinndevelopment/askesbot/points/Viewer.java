@@ -8,6 +8,11 @@ public class Viewer
     private String username;
     private boolean subscriber;
 
+    public Viewer()
+    {
+
+    }
+
     public Viewer(String username)
     {
         Viewer viewer = YAMLViewerHandler.getViewer(username);
@@ -30,6 +35,7 @@ public class Viewer
     public void setSubscriber(boolean subscriber)
     {
         this.subscriber = subscriber;
+        YAMLViewerHandler.saveViewer(this);
     }
 
     public String getUsername()
@@ -50,6 +56,7 @@ public class Viewer
     public void addPoints(int amount)
     {
         this.count += amount;
+        YAMLViewerHandler.saveViewer(this);
     }
 
     public void addPoint()
@@ -59,6 +66,7 @@ public class Viewer
     public void setCount(int count)
     {
         this.count = count;
+        YAMLViewerHandler.saveViewer(this);
     }
 
     @Override

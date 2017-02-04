@@ -51,9 +51,8 @@ public class YAMLViewerHandler
         try(FileWriter writer = new FileWriter(new File(configDir + viewer.getUsername() + ".yaml")))
         {
             Map<String, Object> data = new HashMap<>();
-
-            data.put("username", viewer.getUsername());
             data.put("count", viewer.getCount());
+            data.put("username", viewer.getUsername());
             data.put("subscriber", viewer.isSubscriber());
 
             yaml.dump(data, writer);

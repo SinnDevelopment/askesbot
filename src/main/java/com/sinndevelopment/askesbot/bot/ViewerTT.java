@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
@@ -19,7 +18,7 @@ public class ViewerTT extends TimerTask
 {
     private AskesBot bot;
 
-    private Map<String, Object> chatters = new HashMap<>();
+    private String[] blockedPoints = {"nightbot", "askesbot", "null"};
 
     public ViewerTT(AskesBot bot)
     {
@@ -64,10 +63,19 @@ public class ViewerTT extends TimerTask
 
         for(String s : viewers)
         {
-            Viewer v = YAMLViewerHandler.getViewer(s);
-            v.addPoint();
-            YAMLViewerHandler.saveViewer(v);
-
+            boolean blocked = false;
+            for(String b : blockedPoints)
+            {
+                if(s.equals(b))
+                    blocked = true;
+            }
+            if(!blocked)
+            {
+                Viewer v = YAMLViewerHandler.getViewer(s);
+                v.addPoint();
+                YAMLViewerHandler.saveViewer(v);
+                System.out.println("Added a point to " + v.getUsername());
+            }
         }
     }
 }

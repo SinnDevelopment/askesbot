@@ -16,12 +16,14 @@ public class AddPointsCommand extends ChatCommand
     @Override
     public void onCommand(String channel, String sender, String login, String hostname, List<String> args)
     {
-        if(args.size() < 2)
+        if(args.size() < 3)
         {
-
+            return;
         }
-        Viewer v = YAMLViewerHandler.getViewer(args.get(0));
+        Viewer v = YAMLViewerHandler.getViewer(args.get(1));
+        System.out.println(args.toString());
 
-        v.addPoints(Integer.parseInt(args.get(1)));
+        v.addPoints(Integer.parseInt(args.get(2)));
+        bot.sendChannelMessage("@" + sender + " Successfully added " + args.get(2) + " points to " + args.get(1));
     }
 }

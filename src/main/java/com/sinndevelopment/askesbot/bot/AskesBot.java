@@ -6,7 +6,9 @@ import org.jibble.pircbot.PircBot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class AskesBot extends PircBot
 {
@@ -14,7 +16,8 @@ public class AskesBot extends PircBot
 
     private List<String> moderators = new ArrayList<>();
     private List<String> viewers = new ArrayList<>();
-    private Timer timer = new Timer();
+    private ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
+
     private List<ChatCommand> commands = new ArrayList<>();
     private String helpString = "";
 
@@ -31,10 +34,11 @@ public class AskesBot extends PircBot
         commands.add(new RedeemCommand());
         commands.add(new ToggleSubscriberCommand());
         commands.add(new GetPointsCommand());
+        commands.add(new PrintCommand());
 
-        timer.schedule(new ViewerTT(this), 3000, 60*1000);
+        ses.scheduleAtFixedRate(new ViewerTT(this), 3000, 60 * 1000, TimeUnit.MILLISECONDS);
 
-        for(ChatCommand c: commands)
+        for (ChatCommand c : commands)
         {
             helpString += c.getPrefix() + c.getName() + ", ";
         }
@@ -48,18 +52,19 @@ public class AskesBot extends PircBot
     @Override
     protected void onMessage(String channel, String sender, String login, String hostname, String message)
     {
-        if(message.startsWith("_help"))
+        if (message.startsWith("_help"))
         {
             sendChannelMessage("@" + sender + " my commands are: " + helpString);
         }
-        for(ChatCommand command : commands)
+        for (ChatCommand command : commands)
         {
-            if(message.startsWith(command.getPrefix()+command.getName()))
+            if (message.startsWith(command.getPrefix() + command.getName()))
             {
-                if(isCooldown(sender))
+                if (isCooldown(sender))
                     return;
 
-                command.onMessage(channel, sender, login, hostname, message);
+                command.onMessage(channel, sender, login, hostname, message.substring(
+                        command.getPrefix().length() + command.getName().length()));
                 setCooldown(sender);
             }
         }
@@ -94,8 +99,22 @@ public class AskesBot extends PircBot
     @Override
     protected void onDisconnect()
     {
-        super.onDisconnect();
-        timer.cancel();
+        while (!isConnected()) {
+            try {
+                reconnect();
+            }
+            catch (Exception e) {
+                try
+                {
+                    Thread.sleep(1000L);
+                }
+                catch (InterruptedException e1)
+                {
+                    e1.printStackTrace();
+                }
+            }
+        }
+
     }
 
     public void setCooldown(String user)
@@ -105,14 +124,14 @@ public class AskesBot extends PircBot
 
     public long getCooldown(String user)
     {
-        if(cooldown.containsKey(user))
-            return cooldown.get(user) + 30*1000;
+        if (cooldown.containsKey(user))
+            return cooldown.get(user) + 15 * 1000;
         return System.currentTimeMillis();
     }
 
     public boolean isCooldown(String user)
     {
-        if(cooldown.containsKey(user))
+        if (cooldown.containsKey(user))
         {
             long oldTime = getCooldown(user);
             if (System.currentTimeMillis() < oldTime)
@@ -122,4 +141,6 @@ public class AskesBot extends PircBot
         }
         return false;
     }
+
+
 }

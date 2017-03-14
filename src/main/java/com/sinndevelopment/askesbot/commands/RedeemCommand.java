@@ -1,8 +1,11 @@
 package com.sinndevelopment.askesbot.commands;
 
 import com.sinndevelopment.askesbot.points.Viewer;
+import com.sinndevelopment.askesbot.points.rewards.AlertReward;
+import com.sinndevelopment.askesbot.points.rewards.PetReward;
 import com.sinndevelopment.askesbot.points.rewards.Reward;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class RedeemCommand extends ChatCommand
@@ -12,12 +15,27 @@ public class RedeemCommand extends ChatCommand
         super("redeem", PermissionLevel.VIEWER);
     }
 
+    private Reward[] rewards = {new AlertReward(), new PetReward()};
+
     @Override
     public void onCommand(String channel, String sender, String login, String hostname, List<String> args)
     {
         Viewer viewer = new Viewer(sender);
 
-        Reward reward = null;
-        // Reflection to load class based on name. Error otherwise and say that the reward does not exist.
+        if(args.size() < 1)
+        {
+            bot.sendChannelMessage("@"+sender + " sorry, that's not a valid reward. The valid ones are: "
+                    + Arrays.toString(rewards));
+            return;
+        }
+
+        for (Reward r : rewards)
+        {
+            if(args.get(0).equals(r.getName()))
+            {
+                bot.sendChannelMessage("@"+sender + " sending reward...");
+                r.redeem(viewer, 1);
+            }
+        }
     }
 }

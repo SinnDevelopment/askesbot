@@ -39,8 +39,8 @@ public abstract class ChatCommand
             default:
                 break;
         }
-        String[] splitMess = message.split(" ");
-        List<String> args = Arrays.asList(Arrays.copyOfRange(splitMess, 0, splitMess.length));
+
+        List<String> args = Arrays.asList(message.split(" "));
 
         onCommand(channel, sender, login, hostname, args);
     }

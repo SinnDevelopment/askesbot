@@ -2,5 +2,4 @@
 
 Chat bot to handle points and redeeming for the askesienne twitch channel.
 
-Integrates with GameWisp and the main twitch api.
-
+PIRCBot base along with Twitch API for retrieving list of moderators and users.

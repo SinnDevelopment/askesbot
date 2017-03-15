@@ -30,7 +30,7 @@ public abstract class ChatCommand
                 }
                 break;
             case MODERATOR:
-                if(!bot.getModerators().contains(sender) && !sender.equals("jamiesinn"))
+                if(!bot.getModerators().contains(sender))
                 {
                     noPermission(sender);
                     return;

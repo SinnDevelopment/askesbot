@@ -142,5 +142,10 @@ public class AskesBot extends PircBot
         return false;
     }
 
+    public void sendViewerMessage(String name, String mess)
+    {
+        sendChannelMessage("@" + name + " " + mess);
+    }
+
 
 }

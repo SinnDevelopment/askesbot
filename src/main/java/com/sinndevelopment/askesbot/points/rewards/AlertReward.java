@@ -13,15 +13,18 @@ public class AlertReward extends Reward
     @Override
     public boolean redeem(Viewer v, int count)
     {
+        if(!v.charge(this.getCost()))
+        {
+            return false;
+        }
         try
         {
-            return StreamLabsHandler.sendAlert(v.getUsername(), " says BOO!");
+            return StreamLabsHandler.sendAlert(v.getUsername(), "says BOO!");
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-        v.setCount(v.getCount() - 1500);
         return false;
     }
 }

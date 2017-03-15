@@ -10,8 +10,8 @@ import java.io.IOException;
 
 public class Main
 {
-    public static String OAUTH_TWITCH;
-    public static String REFRESH_TOKEN;
+    public static String OAUTH_TWITCH = "";
+    public static String REFRESH_TOKEN = "";
     public static void main(String[] args) throws IOException, IrcException
     {
         AskesBot bot = new AskesBot();
@@ -27,7 +27,7 @@ public class Main
                         OAUTH_TWITCH = line;
                     else if(line.startsWith("!"))
                         REFRESH_TOKEN = line.substring(1);
-                    break;
+                    
                 }
             }
 

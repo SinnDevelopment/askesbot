@@ -15,7 +15,7 @@ public class PrintCommand extends ChatCommand
         StringBuilder sb = new StringBuilder();
         for(String s : args)
         {
-            if(s.equals("print")) continue;
+            if(s.equals("print") || s.equals(" ")) continue;
 
             sb.append(s).append(" ");
         }

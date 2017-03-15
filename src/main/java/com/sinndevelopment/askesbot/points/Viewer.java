@@ -48,7 +48,7 @@ public class Viewer
         this.username = username;
     }
 
-    public int getCount()
+    public int getAmount()
     {
         return count;
     }
@@ -67,6 +67,16 @@ public class Viewer
     {
         this.count = count;
         YAMLViewerHandler.saveViewer(this);
+    }
+
+    public boolean charge(int amount)
+    {
+        if(getAmount() >= amount)
+        {
+            setCount(getAmount()-amount);
+            return true;
+        }
+        return false;
     }
 
     @Override

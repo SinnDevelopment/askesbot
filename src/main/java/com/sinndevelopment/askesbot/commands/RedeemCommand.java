@@ -3,6 +3,7 @@ package com.sinndevelopment.askesbot.commands;
 import com.sinndevelopment.askesbot.points.Viewer;
 import com.sinndevelopment.askesbot.points.rewards.AlertReward;
 import com.sinndevelopment.askesbot.points.rewards.PetReward;
+import com.sinndevelopment.askesbot.points.rewards.RegularReward;
 import com.sinndevelopment.askesbot.points.rewards.Reward;
 
 import java.util.Arrays;
@@ -15,7 +16,7 @@ public class RedeemCommand extends ChatCommand
         super("redeem", PermissionLevel.VIEWER);
     }
 
-    private Reward[] rewards = {new AlertReward(), new PetReward()};
+    private Reward[] rewards = {new AlertReward(), new PetReward(), new RegularReward()};
 
     @Override
     public void onCommand(String channel, String sender, String login, String hostname, List<String> args)
@@ -33,8 +34,10 @@ public class RedeemCommand extends ChatCommand
         {
             if(args.get(0).equals(r.getName()))
             {
-                bot.sendChannelMessage("@"+sender + " sending reward...");
-                r.redeem(viewer, 1);
+                if(r.redeem(viewer, 1))
+                    bot.sendChannelMessage("@"+sender + " sending reward...");
+                else
+                    bot.sendChannelMessage("@" + sender + " you do not have the balance required.");
             }
         }
     }

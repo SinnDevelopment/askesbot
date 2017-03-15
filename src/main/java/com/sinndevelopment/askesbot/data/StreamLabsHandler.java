@@ -17,7 +17,6 @@ public class StreamLabsHandler
 
     }
 
-
     private static String getAccessToken() throws Exception
     {
         String url = "https://sinndevelopment.com/oauth/streamlabs/token.php?refresh_token=" + Main.REFRESH_TOKEN;
@@ -47,7 +46,6 @@ public class StreamLabsHandler
 
     public static boolean sendAlert(String user, String message) throws Exception
     {
-
         String url = "https://sinndevelopment.com/oauth/streamlabs/alert.php";
         URL obj = new URL(url);
         HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
@@ -57,8 +55,7 @@ public class StreamLabsHandler
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
         con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
         String urlParameters = "access_token=" + getAccessToken() +
-                "&type=donation" +
-                "&message='*" + user + "*" + message;
+                "&message='*" + user + "* " + message;
 
         // Send post request
         con.setDoOutput(true);

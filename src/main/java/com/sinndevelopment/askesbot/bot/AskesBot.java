@@ -56,18 +56,27 @@ public class AskesBot extends PircBot
         {
             sendChannelMessage("@" + sender + " my commands are: " + helpString);
         }
+        ChatCommand command = isCommand(message);
+        if(command != null)
+        {
+            if (isCooldown(sender))
+                return;
+
+            command.onMessage(channel, sender, login, hostname, message.substring(
+                    command.getPrefix().length() + command.getName().length()));
+            setCooldown(sender);
+        }
+    }
+
+    private ChatCommand isCommand(String chat)
+    {
         for (ChatCommand command : commands)
         {
-            if (message.startsWith(command.getPrefix() + command.getName()))
-            {
-                if (isCooldown(sender))
-                    return;
-
-                command.onMessage(channel, sender, login, hostname, message.substring(
-                        command.getPrefix().length() + command.getName().length()));
-                setCooldown(sender);
-            }
+            if (chat.startsWith(command.getFullCommand())
+                    || command.isAlias(chat))
+                return command;
         }
+        return null;
     }
 
     public List<String> getModerators()
@@ -99,11 +108,14 @@ public class AskesBot extends PircBot
     @Override
     protected void onDisconnect()
     {
-        while (!isConnected()) {
-            try {
+        while (!isConnected())
+        {
+            try
+            {
                 reconnect();
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 try
                 {
                     Thread.sleep(1000L);

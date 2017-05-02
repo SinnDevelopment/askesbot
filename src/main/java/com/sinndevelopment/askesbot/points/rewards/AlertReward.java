@@ -8,7 +8,7 @@ public class AlertReward extends Reward
 {
     public AlertReward()
     {
-        super(1500, "alert");
+        super(150, "alert", "hello", "spoop");
     }
 
     @Override
@@ -18,7 +18,7 @@ public class AlertReward extends Reward
 
         try
         {
-            return StreamLabsHandler.sendAlert(v.getUsername(), "says BOO!");
+            return StreamLabsHandler.sendAlert(v.getUsername(), "says hello!");
         }
         catch (Exception e)
         {

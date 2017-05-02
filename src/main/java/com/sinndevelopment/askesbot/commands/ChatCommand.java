@@ -11,11 +11,21 @@ public abstract class ChatCommand
     private String prefix = "_";
     private PermissionLevel permissionLevel;
     protected AskesBot bot = AskesBot.getInstance();
+    private String[] aliases = {};
 
     public ChatCommand(String name, PermissionLevel permissionLevel)
     {
         this.name = name;
         this.permissionLevel = permissionLevel;
+    }
+
+    public ChatCommand(String name, PermissionLevel permissionLevel, String... aliases)
+    {
+        this(name, permissionLevel);
+        if(aliases != null)
+        {
+            System.arraycopy(aliases, 0, this.aliases, 0, aliases.length);
+        }
     }
 
     public void onMessage(String channel, String sender, String login, String hostname, String message)
@@ -63,5 +73,22 @@ public abstract class ChatCommand
     public String getName()
     {
         return name;
+    }
+
+    public String getFullCommand()
+    {
+        return prefix + name;
+    }
+
+    public String[] getAliases()
+    {
+        return aliases;
+    }
+
+    public boolean isAlias(String s)
+    {
+        for(String a : aliases)
+            if(a.equals(prefix+s)) return true;
+        return false;
     }
 }

@@ -7,7 +7,7 @@ public class PetReward extends Reward
 {
     public PetReward()
     {
-        super(120, "petpets");
+        super(120, "petpets", "pets");
     }
 
     @Override

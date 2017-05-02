@@ -32,7 +32,8 @@ public class RedeemCommand extends ChatCommand
 
         for (Reward r : rewards)
         {
-            if(args.get(0).equals(r.getName()))
+            if(args.get(0).equals(r.getName())
+                    || r.isAlias(args.get(0)))
             {
                 if(r.redeem(viewer, 1))
                     bot.sendViewerMessage(sender , "sending reward...");

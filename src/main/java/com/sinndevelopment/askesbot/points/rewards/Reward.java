@@ -7,6 +7,7 @@ public abstract class Reward
 {
     private int cost;
     private String name;
+    private String[] aliases = {};
     protected AskesBot bot;
 
     public Reward(int cost, String name)
@@ -15,6 +16,12 @@ public abstract class Reward
         this.name = name;
 
         this.bot = AskesBot.getInstance();
+    }
+
+    public Reward(int cost, String name, String... aliases)
+    {
+        this(cost, name);
+        System.arraycopy(aliases, 0, this.aliases, 0, aliases.length);
     }
 
     public boolean redeem(Viewer v, int count)
@@ -36,4 +43,16 @@ public abstract class Reward
         return name;
     }
 
+    public String[] getAliases()
+    {
+        return aliases;
+    }
+
+    public boolean isAlias(String s)
+    {
+        for(String a : aliases)
+            if (a.equals(s))
+                return true;
+        return false;
+    }
 }

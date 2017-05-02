@@ -13,10 +13,7 @@ public class PetReward extends Reward
     @Override
     public boolean redeem(Viewer v, int count)
     {
-        if(!v.charge(this.getCost()))
-        {
-            return false;
-        }
+        super.redeem(v, count);
         try
         {
             return StreamLabsHandler.sendAlert(v.getUsername(), "requests a pet be petted");

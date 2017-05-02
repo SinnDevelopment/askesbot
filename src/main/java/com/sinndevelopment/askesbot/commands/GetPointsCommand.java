@@ -17,6 +17,12 @@ public class GetPointsCommand extends ChatCommand
     {
         Viewer v = YAMLViewerHandler.getViewer(sender);
 
-        bot.sendChannelMessage("@"+sender + " you have " + v.getAmount() + " points");
+        if(args.size() > 0)
+        {
+            v = YAMLViewerHandler.getViewer(args.get(0));
+            bot.sendViewerMessage(sender, v.getUsername() + " has " + v.getAmount() + " points");
+        }
+        else
+            bot.sendViewerMessage(sender, "you have " + v.getAmount() + " points");
     }
 }

@@ -17,7 +17,14 @@ public abstract class Reward
         this.bot = AskesBot.getInstance();
     }
 
-    public abstract boolean redeem(Viewer v, int count);
+    public boolean redeem(Viewer v, int count)
+    {
+        if(!v.charge(this.getCost()))
+        {
+            return false;
+        }
+        return false;
+    }
 
     public int getCost()
     {

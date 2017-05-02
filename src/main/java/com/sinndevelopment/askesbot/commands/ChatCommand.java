@@ -36,18 +36,21 @@ public abstract class ChatCommand
                     return;
                 }
                 break;
+            case SUBSCRIBER:
             default:
                 break;
         }
 
         List<String> args = Arrays.asList(message.split(" "));
+        if(args.size() >= 1)
+            args = args.subList(1, args.size());
 
         onCommand(channel, sender, login, hostname, args);
     }
 
     private void noPermission(String sender)
     {
-        bot.sendChannelMessage("@" + sender + " You do not have permission to use " + name);
+        bot.sendViewerMessage(sender, "You do not have permission to use " + name);
     }
 
     protected abstract void onCommand(String channel, String sender, String login, String hostname, List<String> args);

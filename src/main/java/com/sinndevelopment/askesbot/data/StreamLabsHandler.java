@@ -24,9 +24,7 @@ public class StreamLabsHandler
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
-
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
-        int responseCode = con.getResponseCode();
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));

@@ -32,15 +32,15 @@ public class ViewerTT extends TimerTask
         {
             InputStream is = new URL("http://tmi.twitch.tv/group/user/askesienne/chatters").openConnection().getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            String result = "";
+            StringBuilder result = new StringBuilder();
             String line;
             while((line = reader.readLine()) != null)
             {
-                result += line;
+                result.append(line);
             }
             Gson gson = new Gson();
 
-            ret = gson.fromJson(result, new TypeToken<Map<String, Object>>(){}.getType());
+            ret = gson.fromJson(result.toString(), new TypeToken<Map<String, Object>>(){}.getType());
 
         }
         catch (IOException e)
@@ -72,6 +72,8 @@ public class ViewerTT extends TimerTask
             if(!blocked)
             {
                 Viewer v = YAMLViewerHandler.getViewer(s);
+                if(v.isSubscriber()) v.addPoint();
+
                 v.addPoint();
                 YAMLViewerHandler.saveViewer(v);
                 System.out.println("Added a point to " + v.getUsername());

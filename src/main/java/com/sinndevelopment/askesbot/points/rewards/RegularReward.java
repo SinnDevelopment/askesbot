@@ -12,10 +12,7 @@ public class RegularReward extends Reward
     @Override
     public boolean redeem(Viewer v, int count)
     {
-        if(!v.charge(this.getCost()))
-        {
-            return false;
-        }
+        super.redeem(v, count);
 
         bot.sendChannelMessage("!regulars add " + v.getUsername());
 

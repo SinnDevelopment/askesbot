@@ -25,7 +25,7 @@ public class RedeemCommand extends ChatCommand
 
         if(args.size() < 1)
         {
-            bot.sendChannelMessage("@"+sender + " sorry, that's not a valid reward. The valid ones are: "
+            bot.sendViewerMessage(sender , "sorry, that's not a valid reward. The valid ones are: "
                     + Arrays.toString(rewards));
             return;
         }
@@ -35,9 +35,9 @@ public class RedeemCommand extends ChatCommand
             if(args.get(0).equals(r.getName()))
             {
                 if(r.redeem(viewer, 1))
-                    bot.sendChannelMessage("@"+sender + " sending reward...");
+                    bot.sendViewerMessage(sender , "sending reward...");
                 else
-                    bot.sendChannelMessage("@" + sender + " you do not have the balance required.");
+                    bot.sendViewerMessage(sender , "you do not have the balance required.");
             }
         }
     }

@@ -14,8 +14,6 @@ public class AlertReward extends Reward
     @Override
     public boolean redeem(Viewer v, int count)
     {
-        super.redeem(v, count);
-
         try
         {
             return StreamLabsHandler.sendAlert(v.getUsername(), "says hello!");
@@ -23,7 +21,7 @@ public class AlertReward extends Reward
         catch (Exception e)
         {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 }

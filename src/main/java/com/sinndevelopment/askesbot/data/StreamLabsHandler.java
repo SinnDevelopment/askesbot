@@ -3,9 +3,7 @@ package com.sinndevelopment.askesbot.data;
 import com.sinndevelopment.askesbot.Main;
 import org.json.JSONObject;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -38,33 +36,40 @@ public class StreamLabsHandler
         in.close();
 
         JSONObject jsonObject = new JSONObject(response.toString());
-
+        Main.getLogger().info(jsonObject.toString());
+        Main.getLogger().info(response.toString());
+        Main.REFRESH_TOKEN = jsonObject.getString("refresh_token");
         return jsonObject.getString("access_token");
     }
 
     public static boolean sendAlert(String user, String message) throws Exception
     {
         String url = "https://sinndevelopment.com/oauth/streamlabs/alert.php";
-        URL obj = new URL(url);
-        HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
 
-        //add request header
-        con.setRequestMethod("GET");
-        con.setRequestProperty("User-Agent", "Mozilla/5.0");
-        con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
         String urlParameters = "?access_token=" + getAccessToken() +
                 "&message='*" + user + "* " + message;
+        URL obj = new URL(url+urlParameters);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+        con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-        // Send post request
-        con.setDoOutput(true);
-        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-        wr.writeBytes(urlParameters);
-        wr.flush();
-        wr.close();
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuilder response = new StringBuilder();
 
-        int responseCode = con.getResponseCode();
+        while ((inputLine = in.readLine()) != null)
+        {
+            response.append(inputLine);
+        }
+        in.close();
 
-        System.out.println("Attempted Contacting Streamlabs... R:"+responseCode);
-        return responseCode == 200;
+        JSONObject jsonObject = new JSONObject(response.toString());
+        Main.getLogger().info(jsonObject.toString());
+        Main.getLogger().info(response.toString());
+
+        Main.getLogger().info("Attempted Contacting Streamlabs... R:"+con.getResponseCode());
+        ///////
+        return con.getResponseCode() == 200;
     }
 }

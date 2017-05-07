@@ -1,6 +1,5 @@
 package com.sinndevelopment.askesbot.points.rewards;
 
-import com.sinndevelopment.askesbot.data.StreamLabsHandler;
 import com.sinndevelopment.askesbot.points.Viewer;
 
 public class PetReward extends Reward
@@ -13,16 +12,7 @@ public class PetReward extends Reward
     @Override
     public boolean redeem(Viewer v, int count)
     {
-        super.redeem(v, count);
-        try
-        {
-            return StreamLabsHandler.sendAlert(v.getUsername(), "requests a pet be petted");
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return false;
+        bot.sendChannelMessage("@Askesienne, " + v.getUsername() + " requests a pet be petted! askesLove askesDoggo askesHazel");
+        return true;
     }
 }

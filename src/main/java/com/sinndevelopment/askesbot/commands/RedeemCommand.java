@@ -6,17 +6,20 @@ import com.sinndevelopment.askesbot.points.rewards.PetReward;
 import com.sinndevelopment.askesbot.points.rewards.RegularReward;
 import com.sinndevelopment.askesbot.points.rewards.Reward;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class RedeemCommand extends ChatCommand
 {
+    private Reward[] rewards = {new AlertReward(), new PetReward(), new RegularReward()};
+    private StringBuilder validRewards = new StringBuilder();
     public RedeemCommand()
     {
         super("redeem", PermissionLevel.VIEWER);
+        for(Reward r : rewards)
+        {
+            validRewards.append(r.getName()).append(", ");
+        }
     }
-
-    private Reward[] rewards = {new AlertReward(), new PetReward(), new RegularReward()};
 
     @Override
     public void onCommand(String channel, String sender, String login, String hostname, List<String> args)
@@ -26,7 +29,7 @@ public class RedeemCommand extends ChatCommand
         if(args.size() < 1)
         {
             bot.sendViewerMessage(sender , "sorry, that's not a valid reward. The valid ones are: "
-                    + Arrays.toString(rewards));
+                    + validRewards.toString());
             return;
         }
 
@@ -35,10 +38,16 @@ public class RedeemCommand extends ChatCommand
             if(args.get(0).equals(r.getName())
                     || r.isAlias(args.get(0)))
             {
-                if(r.redeem(viewer, 1))
-                    bot.sendViewerMessage(sender , "sending reward...");
+                if(viewer.charge(r.getCost()))
+                {
+                    if(r.redeem(viewer, 1))
+                        bot.sendViewerMessage(sender , "sending reward...");
+                    else
+                        bot.sendViewerMessage(sender, "Something went wrong with redemption :(");
+                }
                 else
                     bot.sendViewerMessage(sender , "you do not have the balance required.");
+
             }
         }
     }

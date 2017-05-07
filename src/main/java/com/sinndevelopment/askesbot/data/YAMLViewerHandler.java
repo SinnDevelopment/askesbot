@@ -1,5 +1,6 @@
 package com.sinndevelopment.askesbot.data;
 
+import com.sinndevelopment.askesbot.Main;
 import com.sinndevelopment.askesbot.points.Viewer;
 import org.yaml.snakeyaml.Yaml;
 
@@ -20,7 +21,7 @@ public class YAMLViewerHandler
         File confDir = new File(configDir);
         if(!confDir.exists())
         {
-            System.out.println("Data directory does not exist, creating now.");
+            Main.getLogger().info("Data directory does not exist, creating now.");
             confDir.mkdir();
         }
 
@@ -36,7 +37,7 @@ public class YAMLViewerHandler
         }
         catch (NoSuchFileException e)
         {
-            System.out.println("Userdata file for " + name + " was not found. Creating now with base data.");
+            Main.getLogger().info("Userdata file for " + name + " was not found. Creating now with base data.");
             return new Viewer(0, name, false);
         }
         catch (IOException e)

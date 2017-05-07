@@ -12,8 +12,6 @@ public class RegularReward extends Reward
     @Override
     public boolean redeem(Viewer v, int count)
     {
-        super.redeem(v, count);
-
         bot.sendChannelMessage("!regulars add " + v.getUsername());
 
         return true;

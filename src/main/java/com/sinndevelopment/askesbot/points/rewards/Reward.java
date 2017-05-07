@@ -21,17 +21,12 @@ public abstract class Reward
     public Reward(int cost, String name, String... aliases)
     {
         this(cost, name);
-        System.arraycopy(aliases, 0, this.aliases, 0, aliases.length);
+        if(aliases.length != 0 && this.aliases.length != 0)
+            System.arraycopy(aliases, 0, this.aliases, 0, aliases.length);
     }
 
-    public boolean redeem(Viewer v, int count)
-    {
-        if(!v.charge(this.getCost()))
-        {
-            return false;
-        }
-        return false;
-    }
+    public abstract boolean redeem(Viewer v, int count);
+
 
     public int getCost()
     {

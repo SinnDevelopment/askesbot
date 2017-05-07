@@ -2,6 +2,7 @@ package com.sinndevelopment.askesbot.bot;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sinndevelopment.askesbot.Main;
 import com.sinndevelopment.askesbot.data.YAMLViewerHandler;
 import com.sinndevelopment.askesbot.points.Viewer;
 
@@ -76,7 +77,7 @@ public class ViewerTT extends TimerTask
 
                 v.addPoint();
                 YAMLViewerHandler.saveViewer(v);
-                System.out.println("Added a point to " + v.getUsername());
+                Main.getLogger().info("Added a point to " + v.getUsername());
             }
         }
     }

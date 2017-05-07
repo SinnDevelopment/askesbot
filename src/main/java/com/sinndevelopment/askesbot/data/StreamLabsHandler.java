@@ -52,7 +52,7 @@ public class StreamLabsHandler
         con.setRequestMethod("GET");
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
         con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-        String urlParameters = "access_token=" + getAccessToken() +
+        String urlParameters = "?access_token=" + getAccessToken() +
                 "&message='*" + user + "* " + message;
 
         // Send post request

@@ -137,7 +137,7 @@ public class AskesBot extends PircBot
     public long getCooldown(String user)
     {
         if (cooldown.containsKey(user))
-            return cooldown.get(user) + 15 * 1000;
+            return cooldown.get(user) + 5 * 1000;
         return System.currentTimeMillis();
     }
 

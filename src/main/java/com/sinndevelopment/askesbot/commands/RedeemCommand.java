@@ -1,16 +1,13 @@
 package com.sinndevelopment.askesbot.commands;
 
 import com.sinndevelopment.askesbot.points.Viewer;
-import com.sinndevelopment.askesbot.points.rewards.AlertReward;
-import com.sinndevelopment.askesbot.points.rewards.PetReward;
-import com.sinndevelopment.askesbot.points.rewards.RegularReward;
-import com.sinndevelopment.askesbot.points.rewards.Reward;
+import com.sinndevelopment.askesbot.points.rewards.*;
 
 import java.util.List;
 
 public class RedeemCommand extends ChatCommand
 {
-    private Reward[] rewards = {new AlertReward(), new PetReward(), new RegularReward()};
+    private Reward[] rewards = {new AlertReward(), new PetReward(), new RegularReward(), new PunchEricReward()};
     private StringBuilder validRewards = new StringBuilder();
     public RedeemCommand()
     {

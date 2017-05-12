@@ -12,7 +12,7 @@ public class PetReward extends Reward
     @Override
     public boolean redeem(Viewer v, int count)
     {
-        bot.sendChannelMessage("@Askesienne, " + v.getUsername() + " requests a pet be petted! askesLove askesDoggo askesHazel");
+        bot.sendChannelMessage("@Askesienne, " + v.getUsername() + " requests a pet be petted! askesLove askesCoopa askesHazel");
         return true;
     }
 }

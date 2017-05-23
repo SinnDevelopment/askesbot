@@ -35,6 +35,7 @@ public class AskesBot extends PircBot
         commands.add(new ToggleSubscriberCommand());
         commands.add(new GetPointsCommand());
         commands.add(new PrintCommand());
+        commands.add(new WatchCommand());
 
         ses.scheduleAtFixedRate(new ViewerTT(this), 3000, 60 * 1000, TimeUnit.MILLISECONDS);
 

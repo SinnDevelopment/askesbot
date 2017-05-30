@@ -105,29 +105,33 @@ public class AskesBot extends PircBot
         this.sendMessage("#askesienne", message);
     }
 
+    public void reload()
+    {
+        try
+        {
+            reconnect();
+            joinChannel("#askesienne");
+        }
+        catch (Exception e)
+        {
+            try
+            {
+                Thread.sleep(1000L);
+            }
+            catch (InterruptedException e1)
+            {
+                e1.printStackTrace();
+            }
+        }
+    }
 
     @Override
     protected void onDisconnect()
     {
         while (!isConnected())
         {
-            try
-            {
-                reconnect();
-            }
-            catch (Exception e)
-            {
-                try
-                {
-                    Thread.sleep(1000L);
-                }
-                catch (InterruptedException e1)
-                {
-                    e1.printStackTrace();
-                }
-            }
+            reload();
         }
-
     }
 
     public void setCooldown(String user)

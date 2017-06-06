@@ -1,14 +1,13 @@
 package com.sinndevelopment.askesbot.points.rewards;
 
-
 import com.sinndevelopment.askesbot.data.StreamLabsHandler;
 import com.sinndevelopment.askesbot.points.Viewer;
 
-public class AlertReward extends Reward
+public class HALReward extends Reward
 {
-    public AlertReward()
+    public HALReward()
     {
-        super(150, "alert", "hello", "spoop");
+        super(150, "hal");
     }
 
     @Override
@@ -16,7 +15,7 @@ public class AlertReward extends Reward
     {
         try
         {
-            return StreamLabsHandler.sendBoo(v.getUsername());
+            return StreamLabsHandler.sendHAL(v.getUsername());
         }
         catch (Exception e)
         {

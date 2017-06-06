@@ -42,12 +42,28 @@ public class StreamLabsHandler
         return jsonObject.getString("access_token");
     }
 
-    public static boolean sendAlert(String user, String message) throws Exception
+    public static boolean sendBoo(String user) throws Exception
+    {
+        return sendStreamLabs("*"+user+"* says boo!",
+                "http://i.imgur.com/eU9dBRP.png",
+                "http://wat.sinnpi.com/dl/nootnoot.ogg");
+    }
+
+    public static boolean sendHAL(String user) throws Exception
+    {
+        return sendStreamLabs("*"+user+"* I'm sorry Libby, I'm afraid I can't do that...",
+                "http://i.imgur.com/DiSyfXB.png",
+                "http://wat.sinnpi.com/dl/dave.ogg");
+    }
+
+    public static boolean sendStreamLabs(String message, String image, String sound) throws Exception
     {
         String url = "https://sinndevelopment.com/oauth/streamlabs/alert.php";
 
         String urlParameters = "?access_token=" + getAccessToken() +
-                "&message='*" + user + "* " + message;
+                "&message=" + message +
+                "&image=" + image +
+                "&sound=" + sound;
         URL obj = new URL(url+urlParameters);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");

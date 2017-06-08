@@ -15,7 +15,12 @@ public class WatchCommand extends ChatCommand
         if(args.size() > 0)
         {
             String strippedUser = args.get(0).replaceAll("@", "");
-            bot.sendChannelMessage("Please check out my friend " + strippedUser + " & follow at twitch.tv/" +strippedUser);
+            String weddingFriend = "";
+            if (args.get(0).contains("edrost"))
+            {
+                weddingFriend = "wedding ";
+            }
+            bot.sendChannelMessage("Please check out my "+weddingFriend+"friend " + strippedUser + " & follow at twitch.tv/" +strippedUser);
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.sinndevelopment.askesbot.commands;
 
 import com.sinndevelopment.askesbot.data.YAMLViewerHandler;
-import com.sinndevelopment.askesbot.points.Viewer;
+import com.sinndevelopment.askesbot.data.Viewer;
 
 import java.util.List;
 

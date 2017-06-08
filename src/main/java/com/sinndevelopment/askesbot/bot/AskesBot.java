@@ -1,6 +1,9 @@
 package com.sinndevelopment.askesbot.bot;
 
 import com.sinndevelopment.askesbot.commands.*;
+import com.sinndevelopment.askesbot.data.TokenLogger;
+import com.sinndevelopment.askesbot.hooks.GameWispHandler;
+import com.sinndevelopment.askesbot.hooks.StreamLabsHandler;
 import org.jibble.pircbot.PircBot;
 
 import java.util.ArrayList;
@@ -19,9 +22,12 @@ public class AskesBot extends PircBot
     private ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
 
     private List<ChatCommand> commands = new ArrayList<>();
-    private String helpString = "";
+    private StringBuilder helpString = new StringBuilder();
 
     private HashMap<String, Long> cooldown = new HashMap<>();
+
+    private StreamLabsHandler streamLabs;
+    private GameWispHandler gameWisp;
 
     public AskesBot()
     {
@@ -29,6 +35,8 @@ public class AskesBot extends PircBot
         this.setLogin("askesbot");
         this.setVersion("1.0");
         this.setVerbose(true);
+        this.streamLabs = new StreamLabsHandler(new TokenLogger("streamlabs"));
+        this.gameWisp = new GameWispHandler(new TokenLogger("gamewisp"));
         instance = this;
         commands.add(new AddPointsCommand());
         commands.add(new RedeemCommand());
@@ -39,10 +47,7 @@ public class AskesBot extends PircBot
 
         ses.scheduleAtFixedRate(new ViewerTT(this), 3000, 60 * 1000, TimeUnit.MILLISECONDS);
 
-        for (ChatCommand c : commands)
-        {
-            helpString += c.getPrefix() + c.getName() + ", ";
-        }
+        commands.forEach(c -> helpString.append(c.getPrefix()).append(c.getName()).append(", "));
     }
 
     public static AskesBot getInstance()
@@ -58,7 +63,7 @@ public class AskesBot extends PircBot
             sendChannelMessage("@" + sender + " my commands are: " + helpString);
         }
         ChatCommand command = isCommand(message);
-        if(command != null)
+        if (command != null)
         {
             if (isCooldown(sender))
                 return;
@@ -165,4 +170,13 @@ public class AskesBot extends PircBot
     }
 
 
+    public StreamLabsHandler getStreamLabs()
+    {
+        return streamLabs;
+    }
+
+    public GameWispHandler getGameWisp()
+    {
+        return gameWisp;
+    }
 }

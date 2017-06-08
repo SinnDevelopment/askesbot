@@ -1,8 +1,7 @@
-package com.sinndevelopment.askesbot.points.rewards;
+package com.sinndevelopment.askesbot.rewards;
 
 
-import com.sinndevelopment.askesbot.data.StreamLabsHandler;
-import com.sinndevelopment.askesbot.points.Viewer;
+import com.sinndevelopment.askesbot.data.Viewer;
 
 public class AlertReward extends Reward
 {
@@ -16,7 +15,7 @@ public class AlertReward extends Reward
     {
         try
         {
-            return StreamLabsHandler.sendBoo(v.getUsername());
+            return bot.getStreamLabs().sendBoo(v.getUsername());
         }
         catch (Exception e)
         {

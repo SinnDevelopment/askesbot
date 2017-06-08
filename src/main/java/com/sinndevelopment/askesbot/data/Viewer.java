@@ -1,6 +1,4 @@
-package com.sinndevelopment.askesbot.points;
-
-import com.sinndevelopment.askesbot.data.YAMLViewerHandler;
+package com.sinndevelopment.askesbot.data;
 
 public class Viewer
 {

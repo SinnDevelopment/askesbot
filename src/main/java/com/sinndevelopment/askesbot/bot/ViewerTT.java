@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sinndevelopment.askesbot.Main;
 import com.sinndevelopment.askesbot.data.YAMLViewerHandler;
-import com.sinndevelopment.askesbot.points.Viewer;
+import com.sinndevelopment.askesbot.data.Viewer;
 
 import java.io.BufferedReader;
 import java.io.IOException;

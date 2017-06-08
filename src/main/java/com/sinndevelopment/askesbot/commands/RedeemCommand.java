@@ -1,7 +1,7 @@
 package com.sinndevelopment.askesbot.commands;
 
-import com.sinndevelopment.askesbot.points.Viewer;
-import com.sinndevelopment.askesbot.points.rewards.*;
+import com.sinndevelopment.askesbot.data.Viewer;
+import com.sinndevelopment.askesbot.rewards.*;
 
 import java.util.List;
 
@@ -44,7 +44,6 @@ public class RedeemCommand extends ChatCommand
                 }
                 else
                     bot.sendViewerMessage(sender , "you do not have the balance required.");
-
             }
         }
     }

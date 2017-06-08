@@ -1,7 +1,7 @@
-package com.sinndevelopment.askesbot.points.rewards;
+package com.sinndevelopment.askesbot.rewards;
 
 import com.sinndevelopment.askesbot.bot.AskesBot;
-import com.sinndevelopment.askesbot.points.Viewer;
+import com.sinndevelopment.askesbot.data.Viewer;
 
 public abstract class Reward
 {

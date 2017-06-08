@@ -1,7 +1,6 @@
 package com.sinndevelopment.askesbot.data;
 
 import com.sinndevelopment.askesbot.Main;
-import com.sinndevelopment.askesbot.points.Viewer;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;

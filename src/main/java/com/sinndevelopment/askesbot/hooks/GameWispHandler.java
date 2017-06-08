@@ -1,6 +1,8 @@
-package com.sinndevelopment.askesbot.data;
+package com.sinndevelopment.askesbot.hooks;
 
 import com.sinndevelopment.askesbot.Main;
+import com.sinndevelopment.askesbot.data.TokenLogger;
+import com.sinndevelopment.askesbot.data.Viewer;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -8,16 +10,20 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class StreamLabsHandler
+public class GameWispHandler
 {
-    public StreamLabsHandler()
-    {
+    public String REFRESH_TOKEN = "";
+    private TokenLogger logger;
 
+    public GameWispHandler(TokenLogger logger)
+    {
+        this.logger = logger;
+        REFRESH_TOKEN = this.logger.getLatest();
     }
 
-    private static String getAccessToken() throws Exception
+    private String getAccessToken() throws Exception
     {
-        String url = "https://sinndevelopment.com/oauth/streamlabs/token.php?refresh_token=" + Main.REFRESH_TOKEN;
+        String url = "https://sinndevelopment.com/oauth/gamewisp/token.php?refresh_token=" + REFRESH_TOKEN;
 
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -38,32 +44,19 @@ public class StreamLabsHandler
         JSONObject jsonObject = new JSONObject(response.toString());
         Main.getLogger().info(jsonObject.toString());
         Main.getLogger().info(response.toString());
-        Main.REFRESH_TOKEN = jsonObject.getString("refresh_token");
+        REFRESH_TOKEN = jsonObject.getString("refresh_token");
+        logger.updateCurrent(REFRESH_TOKEN);
         return jsonObject.getString("access_token");
     }
 
-    public static boolean sendBoo(String user) throws Exception
+    public boolean isSubscriber(Viewer viewer) throws Exception
     {
-        return sendStreamLabs("*"+user+"* says boo!",
-                "http://i.imgur.com/eU9dBRP.png",
-                "http://wat.sinnpi.com/dl/nootnoot.ogg");
-    }
-
-    public static boolean sendHAL(String user) throws Exception
-    {
-        return sendStreamLabs("*"+user+"* I'm sorry Libby, I'm afraid I can't do that...",
-                "http://i.imgur.com/DiSyfXB.png",
-                "http://wat.sinnpi.com/dl/dave.ogg");
-    }
-
-    public static boolean sendStreamLabs(String message, String image, String sound) throws Exception
-    {
-        String url = "https://sinndevelopment.com/oauth/streamlabs/alert.php";
+        String url = "https://sinndevelopment.com/oauth/gamewisp/subscribers.php";
 
         String urlParameters = "?access_token=" + getAccessToken() +
-                "&message=" + message +
-                "&image=" + image +
-                "&sound=" + sound;
+                "&type=twitch" +
+                "&user_name="+viewer.getUsername()+
+                "&include=user";
         URL obj = new URL(url+urlParameters);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
@@ -84,8 +77,12 @@ public class StreamLabsHandler
         Main.getLogger().info(jsonObject.toString());
         Main.getLogger().info(response.toString());
 
-        Main.getLogger().info("Attempted Contacting Streamlabs... R:"+con.getResponseCode());
-        ///////
-        return con.getResponseCode() == 200;
+        Main.getLogger().info("Attempted Contacting Gamewisp... R:"+con.getResponseCode());
+
+        boolean active = jsonObject.getJSONArray("data").getJSONObject(0).getString("status").equals("active");
+        viewer.setSubscriber(active);
+        return active;
     }
+
+
 }

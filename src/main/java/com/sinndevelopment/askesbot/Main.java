@@ -13,16 +13,14 @@ import java.util.logging.SimpleFormatter;
 
 public class Main
 {
-    public static String OAUTH_TWITCH = "";
-    public static String REFRESH_TOKEN = "";
+    private static String OAUTH_TWITCH = "";
     private static Logger logger = Logger.getLogger("Askesbot");
-    private static FileHandler fh;
 
     public static void main(String[] args) throws IOException, IrcException
     {
         try
         {
-            fh = new FileHandler("askes.log", true);
+            FileHandler fh = new FileHandler("askes.log", true);
             logger.setUseParentHandlers(false);
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
@@ -45,9 +43,6 @@ public class Main
                 {
                     if (line.startsWith("oauth:"))
                         OAUTH_TWITCH = line;
-                    else if (line.startsWith("!"))
-                        REFRESH_TOKEN = line.substring(1);
-
                 }
             }
 

@@ -1,6 +1,6 @@
-package com.sinndevelopment.askesbot.points.rewards;
+package com.sinndevelopment.askesbot.rewards;
 
-import com.sinndevelopment.askesbot.points.Viewer;
+import com.sinndevelopment.askesbot.data.Viewer;
 
 public class RegularReward extends Reward
 {

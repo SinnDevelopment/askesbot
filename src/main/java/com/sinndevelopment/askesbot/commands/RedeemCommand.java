@@ -7,14 +7,15 @@ import java.util.List;
 
 public class RedeemCommand extends ChatCommand
 {
-    private Reward[] rewards = {new AlertReward(), new PetReward(), new RegularReward(), new PunchEricReward(), new HALReward()};
+    private Reward[] rewards = {new AlertReward(), new PetReward(), new RegularReward(), new PunchEricReward(), new HALReward(),
+    new TrainsReward()};
     private StringBuilder validRewards = new StringBuilder();
     public RedeemCommand()
     {
         super("redeem", PermissionLevel.VIEWER);
         for(Reward r : rewards)
         {
-            validRewards.append(r.getName()).append(", ");
+            validRewards.append(r.getName()).append(" (").append(r.getCost()).append(")").append(", ");
         }
     }
 
@@ -38,7 +39,10 @@ public class RedeemCommand extends ChatCommand
                 if(viewer.charge(r.getCost()))
                 {
                     if(r.redeem(viewer, 1))
-                        bot.sendViewerMessage(sender , "sending reward...");
+                    {
+                        bot.sendViewerMessage(sender, "sending reward...");
+                        bot.sendViewerMessage(sender, "You now have " + viewer.getAmount() + " points");
+                    }
                     else
                         bot.sendViewerMessage(sender, "Something went wrong with redemption :(");
                 }

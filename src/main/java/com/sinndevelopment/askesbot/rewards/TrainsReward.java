@@ -2,19 +2,18 @@ package com.sinndevelopment.askesbot.rewards;
 
 import com.sinndevelopment.askesbot.data.Viewer;
 
-public class HALReward extends Reward
+public class TrainsReward extends Reward
 {
-    public HALReward()
+    public TrainsReward()
     {
-        super(300, "hal");
+        super( 200, "trains");
     }
-
     @Override
     public boolean redeem(Viewer v, int count)
     {
         try
         {
-            return bot.getStreamLabs().sendHAL(v.getUsername());
+            return bot.getStreamLabs().sendTrains(v.getUsername());
         }
         catch (Exception e)
         {

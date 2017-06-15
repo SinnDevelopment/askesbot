@@ -62,6 +62,13 @@ public class StreamLabsHandler
                 "http://wat.sinnpi.com/dl/dave.ogg");
     }
 
+    public boolean sendTrains(String user) throws Exception
+    {
+        return sendStreamLabs("*"+user+"* likes trains too!",
+                "http://i.imgur.com/33oHinu.png",
+                "http://wat.sinnpi.com/dl/trains.ogg");
+    }
+
     public boolean sendStreamLabs(String message, String image, String sound) throws Exception
     {
         String url = "https://sinndevelopment.com/oauth/streamlabs/alert.php";

@@ -56,26 +56,30 @@ public class ViewerTT extends TimerTask
         Map<String, List<String>> json = (Map<String, List<String>>) getChatters().get("chatters");
         List<String> mods = json.get("moderators");
         List<String> viewers = json.get("viewers");
-
+        System.out.println(mods.toString());
         viewers.addAll(mods);
-
+        System.out.println(viewers.toString());
         bot.setModerators(mods);
         bot.setViewers(viewers);
-
+        boolean blocked;
         for(String s : viewers)
         {
+            blocked = false;
             s = s.toLowerCase();
             for(String b : blockedPoints)
             {
-                if(s.equals(b))
-                    return;
+                if(s.equalsIgnoreCase(b))
+                    blocked = true;
             }
-            Viewer v = YAMLViewerHandler.getViewer(s);
-            //if(v.isSubscriber()) v.addPoint();
-            v.addPoint();
-            YAMLViewerHandler.saveViewer(v);
-            Main.getLogger().info("Added a point to " + v.getUsername());
-            System.out.println("Added a point to " + v.getUsername());
+            if(!blocked)
+            {
+                Viewer v = YAMLViewerHandler.getViewer(s);
+                //if(v.isSubscriber()) v.addPoint();
+                v.addPoint();
+                YAMLViewerHandler.saveViewer(v);
+                Main.getLogger().info("Added a point to " + v.getUsername());
+                System.out.println("Added a point to " + v.getUsername());
+            }
         }
     }
 }

@@ -33,14 +33,14 @@ public abstract class ChatCommand
         switch (permissionLevel)
         {
             case STREAMER:
-                if(!sender.equals("askesienne"))
+                if(!sender.equalsIgnoreCase("askesienne"))
                 {
                     noPermission(sender);
                     return;
                 }
                 break;
             case MODERATOR:
-                if(!bot.getModerators().contains(sender))
+                if(!bot.getModerators().contains(sender.toLowerCase()))
                 {
                     noPermission(sender);
                     return;

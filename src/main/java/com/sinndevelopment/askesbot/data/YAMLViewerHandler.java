@@ -17,6 +17,7 @@ public class YAMLViewerHandler
 
     public static Viewer getViewer(String name)
     {
+        name = name.toLowerCase();
         File confDir = new File(configDir);
         if(!confDir.exists())
         {

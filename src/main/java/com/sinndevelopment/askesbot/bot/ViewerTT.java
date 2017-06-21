@@ -64,21 +64,18 @@ public class ViewerTT extends TimerTask
 
         for(String s : viewers)
         {
-            boolean blocked = false;
+            s = s.toLowerCase();
             for(String b : blockedPoints)
             {
                 if(s.equals(b))
-                    blocked = true;
+                    return;
             }
-            if(!blocked)
-            {
-                Viewer v = YAMLViewerHandler.getViewer(s);
-                if(v.isSubscriber()) v.addPoint();
-
-                v.addPoint();
-                YAMLViewerHandler.saveViewer(v);
-                Main.getLogger().info("Added a point to " + v.getUsername());
-            }
+            Viewer v = YAMLViewerHandler.getViewer(s);
+            //if(v.isSubscriber()) v.addPoint();
+            v.addPoint();
+            YAMLViewerHandler.saveViewer(v);
+            Main.getLogger().info("Added a point to " + v.getUsername());
+            System.out.println("Added a point to " + v.getUsername());
         }
     }
 }

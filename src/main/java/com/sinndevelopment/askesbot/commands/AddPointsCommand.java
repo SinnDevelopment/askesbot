@@ -22,6 +22,7 @@ public class AddPointsCommand extends ChatCommand
         }
         Viewer v = YAMLViewerHandler.getViewer(args.get(0));
         v.addPoints(Integer.parseInt(args.get(1)));
+        YAMLViewerHandler.saveViewer(v);
         bot.sendViewerMessage(sender,"Successfully added " + args.get(1) + " points to " + args.get(0));
     }
 }

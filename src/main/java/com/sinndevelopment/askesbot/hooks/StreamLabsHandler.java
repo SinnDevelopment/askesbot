@@ -69,6 +69,12 @@ public class StreamLabsHandler
                 "http://wat.sinnpi.com/dl/trains.ogg");
     }
 
+    public boolean sendSpook(String user) throws Exception
+    {
+        return sendStreamLabs("*"+user+"* is spooked too!",
+                "https://cdn.discordapp.com/attachments/194128662843490304/329463381612429314/sp00k.PNG",
+                "http://wat.sinnpi.com/dl/ohHey.ogg");
+    }
     public boolean sendStreamLabs(String message, String image, String sound) throws Exception
     {
         String url = "https://sinndevelopment.com/oauth/streamlabs/alert.php";

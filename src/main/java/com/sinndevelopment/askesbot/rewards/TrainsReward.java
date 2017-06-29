@@ -6,7 +6,7 @@ public class TrainsReward extends Reward
 {
     public TrainsReward()
     {
-        super( 200, "trains");
+        super( 5, "trains");
     }
     @Override
     public boolean redeem(Viewer v, int count)

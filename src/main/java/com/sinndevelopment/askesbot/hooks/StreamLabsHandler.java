@@ -73,7 +73,7 @@ public class StreamLabsHandler
     {
         return sendStreamLabs("*"+user+"* is spooked too!",
                 "https://cdn.discordapp.com/attachments/194128662843490304/329463381612429314/sp00k.PNG",
-                "http://wat.sinnpi.com/dl/ohHey.ogg");
+                "http://wat.sinnpi.com/dl/spoop.ogg");
     }
     public boolean sendStreamLabs(String message, String image, String sound) throws Exception
     {

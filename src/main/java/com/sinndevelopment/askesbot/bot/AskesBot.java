@@ -9,9 +9,6 @@ import org.jibble.pircbot.PircBot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class AskesBot extends PircBot
 {
@@ -19,7 +16,6 @@ public class AskesBot extends PircBot
 
     private List<String> moderators = new ArrayList<>();
     private List<String> viewers = new ArrayList<>();
-    private ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
 
     private List<ChatCommand> commands = new ArrayList<>();
     private StringBuilder helpString = new StringBuilder();
@@ -28,6 +24,8 @@ public class AskesBot extends PircBot
 
     private StreamLabsHandler streamLabs;
     private GameWispHandler gameWisp;
+
+
 
     public AskesBot()
     {
@@ -45,8 +43,6 @@ public class AskesBot extends PircBot
         commands.add(new PrintCommand());
         commands.add(new WatchCommand());
         commands.add(new BanCommand());
-
-        ses.scheduleAtFixedRate(new ViewerTT(this), 3000, 60 * 1000, TimeUnit.MILLISECONDS);
 
         commands.forEach(c -> helpString.append(c.getPrefix()).append(c.getName()).append(", "));
     }
@@ -115,8 +111,8 @@ public class AskesBot extends PircBot
     {
         try
         {
-            reconnect();
-            joinChannel("#askesienne");
+            this.reconnect();
+            this.joinChannel("#askesienne");
         }
         catch (Exception e)
         {

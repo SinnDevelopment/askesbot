@@ -6,7 +6,7 @@ public class PunchEricReward extends Reward
 {
     public PunchEricReward()
     {
-        super(350, "lochness");
+        super(35, "lochness");
     }
 
     @Override

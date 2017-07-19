@@ -75,6 +75,13 @@ public class StreamLabsHandler
                 "https://cdn.discordapp.com/attachments/194128662843490304/329463381612429314/sp00k.PNG",
                 "http://wat.sinnpi.com/dl/spoop.ogg");
     }
+
+    public boolean sendPewPew(String user) throws Exception
+    {
+        return sendStreamLabs("*"+ user + "* (☞ﾟヮﾟ)☞",
+                "http://i.imgur.com/8Y8mDzr.png",
+                "http://wat.sinnpi.com/dl/pewpew.ogg");
+    }
     public boolean sendStreamLabs(String message, String image, String sound) throws Exception
     {
         String url = "https://sinndevelopment.com/oauth/streamlabs/alert.php";

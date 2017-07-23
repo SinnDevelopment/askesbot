@@ -18,6 +18,7 @@ public class Main
     private static String OAUTH_TWITCH = "";
     private static Logger logger = Logger.getLogger("Askesbot");
     private static Timer timer = new Timer();
+    private static AskesBot bot;
 
     public static void main(String[] args) throws IOException, IrcException
     {
@@ -60,9 +61,19 @@ public class Main
         bot.setVerbose(true);
         bot.connect("irc.chat.twitch.tv", 6667, OAUTH_TWITCH);
         bot.joinChannel("#askesienne");
-        timer.scheduleAtFixedRate(new ViewerTT(bot), 3000, 60 * 1000);
+        Main.bot = bot;
+
+        startTT(false);
+
     }
 
+    public static void startTT(boolean stop)
+    {
+        if(stop)
+            timer.cancel();
+
+        timer.scheduleAtFixedRate(new ViewerTT(bot), 3000, 60 * 1000);
+    }
     public static Logger getLogger()
     {
         return logger;

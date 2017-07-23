@@ -43,6 +43,7 @@ public class AskesBot extends PircBot
         commands.add(new PrintCommand());
         commands.add(new WatchCommand());
         commands.add(new BanCommand());
+        commands.add(new ReloadCommand());
 
         commands.forEach(c -> helpString.append(c.getPrefix()).append(c.getName()).append(", "));
     }

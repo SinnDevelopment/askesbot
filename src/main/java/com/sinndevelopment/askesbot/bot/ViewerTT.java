@@ -18,7 +18,7 @@ import java.util.TimerTask;
 public class ViewerTT extends TimerTask
 {
     private AskesBot bot;
-
+    private static long lastRun;
     private String[] blockedPoints = {"nightbot", "askesbot", "null"};
 
     public ViewerTT(AskesBot bot)
@@ -53,6 +53,7 @@ public class ViewerTT extends TimerTask
 
     public void run()
     {
+        lastRun = System.currentTimeMillis();
         Map<String, List<String>> json = (Map<String, List<String>>) getChatters().get("chatters");
         List<String> mods = json.get("moderators");
         List<String> viewers = json.get("viewers");
@@ -81,5 +82,17 @@ public class ViewerTT extends TimerTask
                 System.out.println("Added a point to " + v.getUsername());
             }
         }
+    }
+
+    public static long getLastRun()
+    {
+        return lastRun;
+    }
+
+    public static boolean isRunning()
+    {
+        long diff = System.currentTimeMillis() - getLastRun();
+
+        return diff < 1500;
     }
 }

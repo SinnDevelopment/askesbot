@@ -62,9 +62,7 @@ public class Main
         bot.connect("irc.chat.twitch.tv", 6667, OAUTH_TWITCH);
         bot.joinChannel("#askesienne");
         Main.bot = bot;
-
-        startTT(false);
-
+        timer.scheduleAtFixedRate(new ViewerTT(bot), 3000, 60 * 1000);
     }
 
     public static void startTT(boolean stop)

@@ -110,6 +110,13 @@ public class StreamLabsHandler
                 "http://wat.sinnpi.com/dl/pewpew.ogg");
     }
 
+    public boolean sendWhatWhat(String user) throws Exception
+    {
+        return sendStreamLabs("*" + user + "* ಠ_ಠ",
+                "http://i.imgur.com/RBnwQV6.png",
+                "http://wat.sinnpi.com/dl/whatwhat.ogg");
+    }
+
     public boolean sendStreamLabs(String message, String image, String sound) throws Exception
     {
         String url = "https://sinndevelopment.com/oauth/streamlabs/alert.php";

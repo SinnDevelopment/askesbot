@@ -40,8 +40,10 @@ public abstract class ChatCommand
                 }
                 break;
             case MODERATOR:
-                if(!bot.getModerators().contains(sender.toLowerCase()) || !sender.toLowerCase().equals("askesienne")
-                        || !sender.equalsIgnoreCase("jamiesinn"))
+                if(sender.equalsIgnoreCase("jamiesinn") || sender.equalsIgnoreCase("askesienne"))
+                    break;
+
+                if(!bot.getModerators().contains(sender.toLowerCase()))
                 {
                     noPermission(sender);
                     return;

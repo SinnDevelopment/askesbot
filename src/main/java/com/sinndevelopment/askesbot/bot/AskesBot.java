@@ -4,6 +4,7 @@ import com.sinndevelopment.askesbot.commands.*;
 import com.sinndevelopment.askesbot.data.TokenLogger;
 import com.sinndevelopment.askesbot.hooks.GameWispHandler;
 import com.sinndevelopment.askesbot.hooks.StreamLabsHandler;
+import com.sinndevelopment.askesbot.hooks.TwitchAPIHandler;
 import org.jibble.pircbot.PircBot;
 
 import java.util.ArrayList;
@@ -24,8 +25,9 @@ public class AskesBot extends PircBot
 
     private StreamLabsHandler streamLabs;
     private GameWispHandler gameWisp;
+    private TwitchAPIHandler twitchAPIHandler;
 
-
+    private HashMap<String, String> teamKittyMembers = new HashMap<>();
 
     public AskesBot()
     {
@@ -35,6 +37,7 @@ public class AskesBot extends PircBot
         this.setVerbose(true);
         this.streamLabs = new StreamLabsHandler(new TokenLogger("streamlabs"));
         this.gameWisp = new GameWispHandler(new TokenLogger("gamewisp"));
+        this.twitchAPIHandler = new TwitchAPIHandler(new TokenLogger("twitch"));
         instance = this;
         commands.add(new AddPointsCommand());
         commands.add(new RedeemCommand());
@@ -177,5 +180,20 @@ public class AskesBot extends PircBot
     public GameWispHandler getGameWisp()
     {
         return gameWisp;
+    }
+
+    public TwitchAPIHandler getTwitchAPIHandler()
+    {
+        return twitchAPIHandler;
+    }
+
+    public HashMap<String, String> getTeamKittyMembers()
+    {
+        return teamKittyMembers;
+    }
+
+    public void setTeamKittyMembers(HashMap<String, String> teamKittyMembers)
+    {
+        this.teamKittyMembers = teamKittyMembers;
     }
 }

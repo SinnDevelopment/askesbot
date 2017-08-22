@@ -7,6 +7,7 @@ public class HALReward extends Reward
     public HALReward()
     {
         super(300, "hal");
+        super.silent = true;
     }
 
     @Override

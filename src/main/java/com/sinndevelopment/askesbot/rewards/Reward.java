@@ -9,6 +9,7 @@ public abstract class Reward
     private String name;
     private String[] aliases = {};
     protected AskesBot bot;
+    protected boolean silent = false;
 
     public Reward(int cost, String name)
     {
@@ -49,5 +50,10 @@ public abstract class Reward
             if (a.equals(s))
                 return true;
         return false;
+    }
+
+    public boolean isSilent()
+    {
+        return silent;
     }
 }

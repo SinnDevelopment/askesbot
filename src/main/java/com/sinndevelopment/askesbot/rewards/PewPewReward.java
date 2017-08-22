@@ -7,6 +7,7 @@ public class PewPewReward extends Reward
     public PewPewReward()
     {
         super(100, "pewpew");
+        super.silent = true;
     }
 
     @Override

@@ -40,6 +40,7 @@ public class RedeemCommand extends ChatCommand
                 {
                     if(r.redeem(viewer, 1))
                     {
+                        if (r.isSilent()) return;
                         bot.sendViewerMessage(sender, "sending reward...");
                         bot.sendViewerMessage(sender, "You now have " + viewer.getAmount() + " points");
                     }

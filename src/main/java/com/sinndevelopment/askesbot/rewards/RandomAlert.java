@@ -7,6 +7,7 @@ public class RandomAlert extends Reward
     public RandomAlert()
     {
         super(200, "random");
+        super.silent = true;
     }
     @Override
     public boolean redeem(Viewer v, int count)

@@ -7,6 +7,7 @@ public class SpookReward extends Reward
     public SpookReward()
     {
         super(100, "spook");
+        super.silent = true;
     }
     @Override
     public boolean redeem(Viewer v, int count)

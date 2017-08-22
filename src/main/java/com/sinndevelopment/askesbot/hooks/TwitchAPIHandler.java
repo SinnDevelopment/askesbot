@@ -4,9 +4,9 @@ import com.sinndevelopment.askesbot.data.TokenLogger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -25,7 +25,7 @@ public class TwitchAPIHandler
         String url = "https://api.twitch.tv/" + path;
 
         URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
         con.setRequestProperty("Client-ID", CLIENT_ID);
@@ -39,6 +39,8 @@ public class TwitchAPIHandler
             response.append(inputLine);
         }
         in.close();
+        System.out.println(con.getResponseCode() + " " + con.getResponseMessage());
+
         return response.toString();
     }
 
@@ -52,13 +54,14 @@ public class TwitchAPIHandler
         HashMap<String, String> tkMembers = new HashMap<>();
         JSONObject fullreply = getAPIResponse("kraken/teams/teamkitty?api_version=5");
         JSONArray members = fullreply.getJSONArray("users");
-        while(members.iterator().hasNext())
+        for(Object o : members)
         {
-            JSONObject member = (JSONObject) members.iterator().next();
+            JSONObject member = (JSONObject) o;
             String name = member.getString("name");
             String lastPlayed = member.getString("game");
 
             tkMembers.put(name, lastPlayed);
+            System.out.println(name + ", " + lastPlayed);
         }
 
         return tkMembers;

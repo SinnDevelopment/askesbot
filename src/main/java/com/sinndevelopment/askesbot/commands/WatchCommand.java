@@ -16,10 +16,18 @@ public class WatchCommand extends ChatCommand
         {
 
             String strippedUser = args.get(0).replaceAll("@", "");
-            if (bot.getTeamKittyMembers().containsKey(strippedUser))
+            if (bot.getTeamKittyMembers().containsKey(strippedUser.toLowerCase()))
             {
-                bot.sendChannelMessage("Please check out my amazing teammate " + strippedUser + "& follow at twitch.tv/" + strippedUser + ". They were last playing "
+                bot.sendChannelMessage("Please check out my amazing teammate " + strippedUser + " & follow at twitch.tv/" + strippedUser + ". They were last playing "
                         + bot.getTeamKittyMembers().get(strippedUser));
+                try
+                {
+                    bot.setTeamKittyMembers(bot.getTwitchAPIHandler().getTeamKittyMembers());
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
             else
             {
@@ -30,14 +38,6 @@ public class WatchCommand extends ChatCommand
                     weddingFriend = "wedding ";
                 }
                 bot.sendChannelMessage("Please check out my " + weddingFriend + "friend " + strippedUser + " & follow at twitch.tv/" + strippedUser);
-            }
-            try
-            {
-                bot.setTeamKittyMembers(bot.getTwitchAPIHandler().getTeamKittyMembers());
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
             }
         }
     }

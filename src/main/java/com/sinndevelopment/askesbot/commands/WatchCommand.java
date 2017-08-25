@@ -32,12 +32,16 @@ public class WatchCommand extends ChatCommand
             else
             {
 
-                String weddingFriend = "";
+                String friend = "";
                 if (args.get(0).contains("edrost"))
                 {
-                    weddingFriend = "wedding ";
+                    friend = "wedding ";
                 }
-                bot.sendChannelMessage("Please check out my " + weddingFriend + "friend " + strippedUser + " & follow at twitch.tv/" + strippedUser);
+                if(args.get(0).equalsIgnoreCase("lantheos"))
+                {
+                    friend = "pirate ";
+                }
+                bot.sendChannelMessage("Please check out my " + friend + "friend " + strippedUser + " & follow at twitch.tv/" + strippedUser);
             }
         }
     }

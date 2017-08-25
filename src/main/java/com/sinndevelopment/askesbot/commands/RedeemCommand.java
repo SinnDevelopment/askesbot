@@ -43,13 +43,22 @@ public class RedeemCommand extends ChatCommand
                         if (r.isSilent()) return;
                         bot.sendViewerMessage(sender, "sending reward...");
                         bot.sendViewerMessage(sender, "You now have " + viewer.getAmount() + " points");
+                        return;
                     }
                     else
+                    {
                         bot.sendViewerMessage(sender, "Something went wrong with redemption :(");
+                        return;
+                    }
                 }
                 else
-                    bot.sendViewerMessage(sender , "you do not have the balance required.");
+                {
+                    bot.sendViewerMessage(sender, "you do not have the balance required.");
+                    return;
+                }
             }
         }
+        if(sender.equalsIgnoreCase("lantheos"))
+            bot.sendViewerMessage(sender, " - no scary messages that don't exist.");
     }
 }

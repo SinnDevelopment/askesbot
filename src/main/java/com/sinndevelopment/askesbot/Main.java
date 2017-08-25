@@ -63,6 +63,15 @@ public class Main
         bot.joinChannel("#askesienne");
         Main.bot = bot;
         startTT();
+
+        try
+        {
+            bot.setTeamKittyMembers(bot.getTwitchAPIHandler().getTeamKittyMembers());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public static void startTT()

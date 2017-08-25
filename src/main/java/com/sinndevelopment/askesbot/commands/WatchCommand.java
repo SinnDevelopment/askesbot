@@ -20,14 +20,7 @@ public class WatchCommand extends ChatCommand
             {
                 bot.sendChannelMessage("Please check out my amazing teammate " + strippedUser + " & follow at twitch.tv/" + strippedUser + ". They were last playing "
                         + bot.getTeamKittyMembers().get(strippedUser));
-                try
-                {
-                    bot.setTeamKittyMembers(bot.getTwitchAPIHandler().getTeamKittyMembers());
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
+
             }
             else
             {
@@ -42,6 +35,14 @@ public class WatchCommand extends ChatCommand
                     friend = "pirate ";
                 }
                 bot.sendChannelMessage("Please check out my " + friend + "friend " + strippedUser + " & follow at twitch.tv/" + strippedUser);
+            }
+            try
+            {
+                bot.setTeamKittyMembers(bot.getTwitchAPIHandler().getTeamKittyMembers());
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
             }
         }
     }

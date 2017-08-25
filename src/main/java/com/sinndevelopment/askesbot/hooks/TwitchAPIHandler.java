@@ -60,8 +60,8 @@ public class TwitchAPIHandler
             String name = member.getString("name");
             String lastPlayed = member.getString("game");
 
-            tkMembers.put(name, lastPlayed);
-            System.out.println(name + ", " + lastPlayed);
+            tkMembers.put(name.toLowerCase(), lastPlayed);
+            System.out.println(name.toLowerCase() + ", " + lastPlayed);
         }
 
         return tkMembers;

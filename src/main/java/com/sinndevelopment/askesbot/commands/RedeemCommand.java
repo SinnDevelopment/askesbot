@@ -8,7 +8,7 @@ import java.util.List;
 public class RedeemCommand extends ChatCommand
 {
     private Reward[] rewards = {new AlertReward(), new PetReward(), new RegularReward(), new PunchEricReward(), new HALReward(),
-    new TrainsReward(), new SpookReward(), new PewPewReward(), new RandomAlert(), new WhatWhatReward()};
+    new TrainsReward(), new SpookReward(), new PewPewReward(), new RandomAlert(), new WhatWhatReward(), new MeowReward(), new MeReward()};
     private StringBuilder validRewards = new StringBuilder();
     public RedeemCommand()
     {
@@ -40,6 +40,11 @@ public class RedeemCommand extends ChatCommand
                 {
                     if(r.redeem(viewer, 1))
                     {
+                        if(sender.equalsIgnoreCase("lantheos") && r.getName().equalsIgnoreCase("meow"))
+                        {
+                            bot.sendViewerMessage(sender, " - no scary messages that don't exist.");
+                            return;
+                        }
                         if (r.isSilent()) return;
                         bot.sendViewerMessage(sender, "sending reward...");
                         bot.sendViewerMessage(sender, "You now have " + viewer.getAmount() + " points");

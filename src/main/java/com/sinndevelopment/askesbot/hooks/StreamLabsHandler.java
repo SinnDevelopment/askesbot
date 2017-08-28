@@ -117,6 +117,13 @@ public class StreamLabsHandler
                 "http://wat.sinnpi.com/dl/whatwhat.ogg");
     }
 
+    public boolean sendMeow(String user) throws Exception
+    {
+        return sendStreamLabs("*"+user + "* says MEOW!",
+                "https://media.giphy.com/media/fyMWf5BQ7eIW4/giphy.gif",
+                "http://wat.sinnpi.com/dl/meow.ogg");
+    }
+
     public boolean sendStreamLabs(String message, String image, String sound) throws Exception
     {
         String url = "https://sinndevelopment.com/oauth/streamlabs/alert.php";

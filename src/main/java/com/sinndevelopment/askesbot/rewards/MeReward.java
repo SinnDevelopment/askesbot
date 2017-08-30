@@ -19,7 +19,7 @@ public class MeReward extends Reward
             {
                 case "lantheos":
                     return bot.getStreamLabs().sendStreamLabs("Hi I'm *Lantheos*...",
-                            "http://i.imgur.com/9uuUzV8.png",
+                            "https://media.giphy.com/media/IXs4NJprHyqzu/giphy.gif",
                             "http://wat.sinnpi.com/dl/cock.ogg");
                 case "edrost":
                     return bot.getStreamLabs().sendTrains("edrost");

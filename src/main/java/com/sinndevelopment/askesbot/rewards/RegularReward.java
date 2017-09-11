@@ -4,9 +4,10 @@ import com.sinndevelopment.askesbot.data.Viewer;
 
 public class RegularReward extends Reward
 {
+    //TODO: Properly setup the regulars to have whitelist for urls - must bug libby.
     public RegularReward()
     {
-        super(360, "regular");
+        super(500, "regular");
     }
 
     @Override

@@ -76,6 +76,8 @@ public class Main
 
     public static void startTT()
     {
+        timer = null;
+        timer = new Timer();
         timer.scheduleAtFixedRate(new ViewerTT(bot), 3000, 60 * 1000);
     }
     public static Logger getLogger()

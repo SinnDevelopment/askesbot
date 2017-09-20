@@ -79,49 +79,49 @@ public class StreamLabsHandler
     {
         return sendStreamLabs("*" + user + "* says boo!",
                 "http://i.imgur.com/eU9dBRP.png",
-                "http://wat.sinnpi.com/dl/nootnoot.ogg");
+                "https://s3.ca-central-1.amazonaws.com/askesbot/audio/nootnoot.ogg");
     }
 
     public boolean sendHAL(String user) throws Exception
     {
         return sendStreamLabs("*" + user + "* I'm sorry Libby, I'm afraid I can't do that...",
                 "http://i.imgur.com/DiSyfXB.png",
-                "http://wat.sinnpi.com/dl/dave.ogg");
+                "https://s3.ca-central-1.amazonaws.com/askesbot/audio/dave.ogg");
     }
 
     public boolean sendTrains(String user) throws Exception
     {
         return sendStreamLabs("*" + user + "* likes trains too!",
                 "http://i.imgur.com/33oHinu.png",
-                "http://wat.sinnpi.com/dl/trains.ogg");
+                "https://s3.ca-central-1.amazonaws.com/askesbot/audio/trains.ogg");
     }
 
     public boolean sendSpook(String user) throws Exception
     {
         return sendStreamLabs("*" + user + "* is spooked too!",
                 "https://cdn.discordapp.com/attachments/194128662843490304/329463381612429314/sp00k.PNG",
-                "http://wat.sinnpi.com/dl/spoop.ogg");
+                "https://s3.ca-central-1.amazonaws.com/askesbot/audio/spoop.ogg");
     }
 
     public boolean sendPewPew(String user) throws Exception
     {
         return sendStreamLabs("*" + user + "* (☞ﾟヮﾟ)☞",
                 "http://i.imgur.com/8Y8mDzr.png",
-                "http://wat.sinnpi.com/dl/pewpew.ogg");
+                "https://s3.ca-central-1.amazonaws.com/askesbot/audio/pewpew.ogg");
     }
 
     public boolean sendWhatWhat(String user) throws Exception
     {
         return sendStreamLabs("*" + user + "* ಠ_ಠ",
                 "http://i.imgur.com/RBnwQV6.png",
-                "http://wat.sinnpi.com/dl/whatwhat.ogg");
+                "https://s3.ca-central-1.amazonaws.com/askesbot/audio/whatwhat.ogg");
     }
 
     public boolean sendMeow(String user) throws Exception
     {
         return sendStreamLabs("*"+user + "* says MEOW!",
                 "https://media.giphy.com/media/fyMWf5BQ7eIW4/giphy.gif",
-                "http://wat.sinnpi.com/dl/meow.ogg");
+                "https://s3.ca-central-1.amazonaws.com/askesbot/audio/meow.ogg");
     }
 
     public boolean sendStreamLabs(String message, String image, String sound) throws Exception

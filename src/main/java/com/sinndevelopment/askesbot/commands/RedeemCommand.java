@@ -8,7 +8,8 @@ import java.util.List;
 public class RedeemCommand extends ChatCommand
 {
     private Reward[] rewards = {new AlertReward(), new PetReward(), new RegularReward(), new PunchEricReward(), new HALReward(),
-    new TrainsReward(), new SpookReward(), new PewPewReward(), new RandomAlert(), new WhatWhatReward(), new MeowReward(), new MeReward()};
+    new TrainsReward(), new SpookReward(), new PewPewReward(), new RandomAlert(), new WhatWhatReward(), new MeowReward(), new MeReward(),
+    new ShameReward()};
     private StringBuilder validRewards = new StringBuilder();
     public RedeemCommand()
     {

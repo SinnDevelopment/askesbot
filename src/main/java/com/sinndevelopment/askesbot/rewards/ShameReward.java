@@ -7,7 +7,7 @@ public class ShameReward extends Reward
     public ShameReward()
     {
         super(60, "shame");
-        super.silent = true;
+        super.silent = false;
     }
     @Override
     public boolean redeem(Viewer v, int count)

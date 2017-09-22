@@ -126,7 +126,7 @@ public class StreamLabsHandler
 
     public boolean sendShame(String user) throws Exception
     {
-        return sendStreamLabs("", "", "https://s3.ca-central-1.amazonaws.com/askesbot/audio/shame.ogg");
+        return sendStreamLabs("", "https://www.transparenttextures.com/patterns/asfalt-light.png", "https://s3.ca-central-1.amazonaws.com/askesbot/audio/shame.ogg");
     }
 
     public boolean sendStreamLabs(String message, String image, String sound) throws Exception

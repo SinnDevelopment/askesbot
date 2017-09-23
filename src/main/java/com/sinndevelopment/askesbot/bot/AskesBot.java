@@ -89,6 +89,21 @@ public class AskesBot extends PircBot
         }
     }
 
+    @Override
+    protected void onPrivateMessage(String sender, String login, String hostname, String message)
+    {
+        ChatCommand command = isCommand(message);
+        if (command != null)
+        {
+            if (isCooldown(sender))
+                return;
+
+            command.onPMRecieved(sender, login, hostname, message.substring(
+                    command.getPrefix().length() + command.getName().length()));
+            setCooldown(sender);
+        }
+    }
+
     private ChatCommand isCommand(String chat)
     {
         for (ChatCommand command : commands)
@@ -123,6 +138,11 @@ public class AskesBot extends PircBot
     public void sendChannelMessage(String message)
     {
         this.sendMessage("#askesienne", message);
+    }
+
+    public void sendUserMessage(String user, String message)
+    {
+        this.sendMessage(user, message);
     }
 
     public void reload()

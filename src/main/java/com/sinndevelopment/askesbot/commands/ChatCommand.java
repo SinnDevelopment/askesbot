@@ -30,29 +30,7 @@ public abstract class ChatCommand
 
     public void onMessage(String channel, String sender, String login, String hostname, String message)
     {
-        switch (permissionLevel)
-        {
-            case STREAMER:
-                if(!sender.equalsIgnoreCase("askesienne"))
-                {
-                    noPermission(sender);
-                    return;
-                }
-                break;
-            case MODERATOR:
-                if(sender.equalsIgnoreCase("jamiesinn") || sender.equalsIgnoreCase("askesienne"))
-                    break;
-
-                if(!bot.getModerators().contains(sender.toLowerCase()))
-                {
-                    noPermission(sender);
-                    return;
-                }
-                break;
-            case SUBSCRIBER:
-            default:
-                break;
-        }
+        if(!checkPermissions(sender, permissionLevel)) return;
 
         List<String> args = Arrays.asList(message.split(" "));
         if(args.size() >= 1)
@@ -61,11 +39,23 @@ public abstract class ChatCommand
         onCommand(channel, sender, login, hostname, args);
     }
 
+    public void onPMRecieved(String sender, String login, String hostname, String message)
+    {
+        if(!checkPermissions(sender, permissionLevel)) return;
+
+        List<String> args = Arrays.asList(message.split(" "));
+        if(args.size() >= 1)
+            args = args.subList(1, args.size());
+
+        onPMCommand(sender, sender, login, hostname, args);
+    }
+
     private void noPermission(String sender)
     {
         bot.sendViewerMessage(sender, "You do not have permission to use " + name);
     }
 
+    protected void onPMCommand(String channel, String sender, String login, String hostname, List<String> args) {}
     protected abstract void onCommand(String channel, String sender, String login, String hostname, List<String> args);
 
     public String getPrefix()
@@ -93,5 +83,30 @@ public abstract class ChatCommand
         for(String a : aliases)
             if(a.equals(prefix+s)) return true;
         return false;
+    }
+
+    private boolean checkPermissions(String sender, PermissionLevel perms)
+    {
+        switch (permissionLevel)
+        {
+            case STREAMER:
+                if(!sender.equalsIgnoreCase("askesienne"))
+                {
+                    noPermission(sender);
+                    return false;
+                }
+                break;
+            case MODERATOR:
+                if(sender.equalsIgnoreCase("jamiesinn") || sender.equalsIgnoreCase("askesienne"))
+                    break;
+
+                if(!bot.getModerators().contains(sender.toLowerCase()))
+                {
+                    noPermission(sender);
+                    return false;
+                }
+                break;
+        }
+        return true;
     }
 }

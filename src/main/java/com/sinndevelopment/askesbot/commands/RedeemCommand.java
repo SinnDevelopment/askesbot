@@ -67,4 +67,46 @@ public class RedeemCommand extends ChatCommand
         if(sender.equalsIgnoreCase("lantheos"))
             bot.sendViewerMessage(sender, " - no scary messages that don't exist.");
     }
+
+    @Override
+    public void onPMCommand(String sender, String login, String hostname, String message, List<String> args)
+    {
+        Viewer viewer = new Viewer(sender);
+
+        if(args.size() < 1)
+        {
+            bot.sendUserMessage(sender , "sorry, that's not a valid reward. The valid ones are: "
+                    + validRewards.toString());
+            return;
+        }
+
+        for (Reward r : rewards)
+        {
+            if (args.get(0).equals(r.getName())
+                    || r.isAlias(args.get(0)))
+            {
+                if (viewer.charge(r.getCost()))
+                {
+                    if (r.redeem(viewer, 1))
+                    {
+                        bot.sendUserMessage(sender, "sending reward...");
+                        bot.sendUserMessage(sender, "You now have " + viewer.getAmount() + " points");
+                        return;
+                    }
+                    else
+                    {
+                        bot.sendUserMessage(sender, "Something went wrong with redemption :(");
+                        return;
+                    }
+                }
+                else
+                {
+                    bot.sendUserMessage(sender, "you do not have the balance required.");
+                    return;
+                }
+            }
+        }
+        bot.sendUserMessage(sender , "sorry, that's not a valid reward. The valid ones are: "
+                + validRewards.toString());
+    }
 }

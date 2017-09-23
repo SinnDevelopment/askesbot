@@ -2,11 +2,13 @@ package com.sinndevelopment.askesbot.bot;
 
 import com.sinndevelopment.askesbot.commands.*;
 import com.sinndevelopment.askesbot.data.TokenLogger;
+import com.sinndevelopment.askesbot.hooks.AskesbotWebHandler;
 import com.sinndevelopment.askesbot.hooks.GameWispHandler;
 import com.sinndevelopment.askesbot.hooks.StreamLabsHandler;
 import com.sinndevelopment.askesbot.hooks.TwitchAPIHandler;
 import org.jibble.pircbot.PircBot;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +28,7 @@ public class AskesBot extends PircBot
     private StreamLabsHandler streamLabs;
     private GameWispHandler gameWisp;
     private TwitchAPIHandler twitchAPIHandler;
+    private AskesbotWebHandler askesbotWebHandler;
 
     private HashMap<String, String> teamKittyMembers = new HashMap<>();
 
@@ -38,6 +41,7 @@ public class AskesBot extends PircBot
         this.streamLabs = new StreamLabsHandler(new TokenLogger("streamlabs"));
         this.gameWisp = new GameWispHandler(new TokenLogger("gamewisp"));
         this.twitchAPIHandler = new TwitchAPIHandler(new TokenLogger("twitch"));
+        this.askesbotWebHandler = new AskesbotWebHandler(new TokenLogger("askesbot-web"));
         instance = this;
         commands.add(new AddPointsCommand());
         commands.add(new RedeemCommand());
@@ -48,6 +52,15 @@ public class AskesBot extends PircBot
         commands.add(new BanCommand());
         commands.add(new ReloadCommand());
         commands.add(new GambleCommand());
+
+        try
+        {
+            this.askesbotWebHandler.getMe();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
 
         commands.forEach(c -> helpString.append(c.getPrefix()).append(c.getName()).append(", "));
     }
@@ -195,5 +208,10 @@ public class AskesBot extends PircBot
     public void setTeamKittyMembers(HashMap<String, String> teamKittyMembers)
     {
         this.teamKittyMembers = teamKittyMembers;
+    }
+
+    public AskesbotWebHandler getAskesbotWebHandler()
+    {
+        return askesbotWebHandler;
     }
 }

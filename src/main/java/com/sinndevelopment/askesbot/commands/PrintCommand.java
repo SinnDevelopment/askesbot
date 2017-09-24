@@ -1,5 +1,8 @@
 package com.sinndevelopment.askesbot.commands;
 
+import org.pircbotx.hooks.events.PrivateMessageEvent;
+import org.pircbotx.hooks.types.GenericMessageEvent;
+
 import java.util.List;
 
 public class PrintCommand extends ChatCommand
@@ -9,16 +12,23 @@ public class PrintCommand extends ChatCommand
         super("print", PermissionLevel.MODERATOR);
     }
 
+
     @Override
-    protected void onCommand(String channel, String sender, String login, String hostname, List<String> args)
+    protected void onPMCommand(PrivateMessageEvent event, String sender, List<String> args)
+    {
+
+    }
+
+    @Override
+    protected void onCommand(GenericMessageEvent event, String sender, List<String> args)
     {
         StringBuilder sb = new StringBuilder();
-        for(String s : args)
+        for (String s : args)
         {
-            if(s.equals("print") || s.equals(" ")) continue;
+            if (s.equals("print") || s.equals(" ")) continue;
 
             sb.append(s).append(" ");
         }
-        bot.sendChannelMessage(sb.toString());
+        bot.replyMessage(event, sb.toString());
     }
 }

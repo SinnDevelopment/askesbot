@@ -1,6 +1,7 @@
 package com.sinndevelopment.askesbot.rewards;
 
 import com.sinndevelopment.askesbot.data.Viewer;
+import org.pircbotx.hooks.types.GenericMessageEvent;
 
 public class PetReward extends Reward
 {
@@ -10,9 +11,9 @@ public class PetReward extends Reward
     }
 
     @Override
-    public boolean redeem(Viewer v, int count)
+    public boolean redeem(Viewer v, int count, GenericMessageEvent event)
     {
-        bot.sendChannelMessage("@Askesienne, " + v.getUsername() + " requests a pet be petted! askesLove askesCoopa askesHazel askesiGOLD");
+        bot.replyMessage(event, "@Askesienne, " + v.getUsername() + " requests a pet be petted! askesLove askesCoopa askesHazel askesiGOLD");
         return true;
     }
 }

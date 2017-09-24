@@ -6,14 +6,20 @@ import com.sinndevelopment.askesbot.hooks.AskesbotWebHandler;
 import com.sinndevelopment.askesbot.hooks.GameWispHandler;
 import com.sinndevelopment.askesbot.hooks.StreamLabsHandler;
 import com.sinndevelopment.askesbot.hooks.TwitchAPIHandler;
-import org.jibble.pircbot.PircBot;
+import org.pircbotx.Configuration;
+import org.pircbotx.PircBotX;
+import org.pircbotx.cap.EnableCapHandler;
+import org.pircbotx.exception.IrcException;
+import org.pircbotx.hooks.ListenerAdapter;
+import org.pircbotx.hooks.events.PrivateMessageEvent;
+import org.pircbotx.hooks.types.GenericMessageEvent;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AskesBot extends PircBot
+public class AskesBot extends ListenerAdapter
 {
     private static AskesBot instance;
 
@@ -32,12 +38,28 @@ public class AskesBot extends PircBot
 
     private HashMap<String, String> teamKittyMembers = new HashMap<>();
 
-    public AskesBot()
+    private PircBotX pircBotX;
+
+    private AskesBot()
     {
-        this.setName("askesbot");
-        this.setLogin("askesbot");
-        this.setVersion("1.0");
-        this.setVerbose(true);
+    }
+
+    public AskesBot(String oauth) throws IOException, IrcException
+    {
+        Configuration config = new Configuration.Builder()
+                .setAutoNickChange(false)
+                .setOnJoinWhoEnabled(false)
+                .setCapEnabled(true)
+                .addCapHandler(new EnableCapHandler("twitch.tv/membership"))
+                .addCapHandler(new EnableCapHandler("twitch.tv/tags"))
+                .addCapHandler(new EnableCapHandler("twitch.tv/commands"))
+                .addServer("irc.twitch.tv")
+                .setName("askesbot")
+                .setServerPassword(oauth)
+                .addListener(new AskesBot())
+                .setVersion("3.0")
+                .buildConfiguration();
+
         this.streamLabs = new StreamLabsHandler(new TokenLogger("streamlabs"));
         this.gameWisp = new GameWispHandler(new TokenLogger("gamewisp"));
         this.twitchAPIHandler = new TwitchAPIHandler(new TokenLogger("twitch"));
@@ -63,6 +85,9 @@ public class AskesBot extends PircBot
         }
 
         commands.forEach(c -> helpString.append(c.getPrefix()).append(c.getName()).append(", "));
+
+        pircBotX = new PircBotX(config);
+        pircBotX.startBot();
     }
 
     public static AskesBot getInstance()
@@ -70,38 +95,47 @@ public class AskesBot extends PircBot
         return instance;
     }
 
+
     @Override
-    protected void onMessage(String channel, String sender, String login, String hostname, String message)
+    public void onGenericMessage(final GenericMessageEvent event) throws Exception
     {
+        String message = event.getMessage();
+        System.out.println(message);
+        String sender = event.getUser().getNick();
+
+        if (event instanceof PrivateMessageEvent)
+        {
+            PrivateMessageEvent pmevent = (PrivateMessageEvent) event;
+            ChatCommand command = isCommand(message);
+            if (command != null)
+            {
+                if (isCooldown(sender))
+                    return;
+
+                command.onPMRecieved(sender, message.substring(
+                        command.getPrefix().length() + command.getName().length()), pmevent);
+                setCooldown(sender);
+            }
+            return;
+        }
+
         if (message.startsWith("_help"))
         {
-            sendChannelMessage("@" + sender + " my commands are: " + helpString);
+            this.replyMessage(event, "@" + sender + " my commands are: " + helpString);
+            return;
         }
+
         ChatCommand command = isCommand(message);
         if (command != null)
         {
             if (isCooldown(sender))
                 return;
 
-            command.onMessage(channel, sender, login, hostname, message.substring(
-                    command.getPrefix().length() + command.getName().length()));
+            command.onMessage(sender, message.substring(
+                    command.getPrefix().length() + command.getName().length()), event);
             setCooldown(sender);
         }
-    }
 
-    @Override
-    protected void onPrivateMessage(String sender, String login, String hostname, String message)
-    {
-        ChatCommand command = isCommand(message);
-        if (command != null)
-        {
-            if (isCooldown(sender))
-                return;
-
-            command.onPMRecieved(sender, login, hostname, message.substring(
-                    command.getPrefix().length() + command.getName().length()));
-            setCooldown(sender);
-        }
     }
 
     private ChatCommand isCommand(String chat)
@@ -135,43 +169,14 @@ public class AskesBot extends PircBot
         this.viewers = viewers;
     }
 
-    public void sendChannelMessage(String message)
+    public void replyMessage(GenericMessageEvent event, String message)
     {
-        this.sendMessage("#askesienne", message);
+        event.respondWith(message);
     }
 
-    public void sendUserMessage(String user, String message)
+    public void replyMessage(GenericMessageEvent event,  String user, String message)
     {
-        this.sendMessage(user, message);
-    }
-
-    public void reload()
-    {
-        try
-        {
-            this.reconnect();
-            this.joinChannel("#askesienne");
-        }
-        catch (Exception e)
-        {
-            try
-            {
-                Thread.sleep(1000L);
-            }
-            catch (InterruptedException e1)
-            {
-                e1.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    protected void onDisconnect()
-    {
-        while (!isConnected())
-        {
-            reload();
-        }
+        replyMessage(event, "@" + user + ": " + message);
     }
 
     public void setCooldown(String user)
@@ -198,12 +203,6 @@ public class AskesBot extends PircBot
         }
         return false;
     }
-
-    public void sendViewerMessage(String name, String mess)
-    {
-        sendChannelMessage("@" + name + " " + mess);
-    }
-
 
     public StreamLabsHandler getStreamLabs()
     {

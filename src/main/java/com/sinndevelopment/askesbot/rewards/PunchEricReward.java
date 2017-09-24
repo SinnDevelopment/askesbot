@@ -1,6 +1,7 @@
 package com.sinndevelopment.askesbot.rewards;
 
 import com.sinndevelopment.askesbot.data.Viewer;
+import org.pircbotx.hooks.types.GenericMessageEvent;
 
 public class PunchEricReward extends Reward
 {
@@ -10,9 +11,9 @@ public class PunchEricReward extends Reward
     }
 
     @Override
-    public boolean redeem(Viewer v, int count)
+    public boolean redeem(Viewer v, int count, GenericMessageEvent event)
     {
-        bot.sendChannelMessage("@Askesienne, " + v.getUsername() + " needs about tree-fiddy to punch Eric");
+        bot.replyMessage(event, "@Askesienne, " + v.getUsername() + " needs about tree-fiddy to punch Eric");
         return true;
     }
 }

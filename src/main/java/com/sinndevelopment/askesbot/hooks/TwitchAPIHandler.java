@@ -14,6 +14,7 @@ public class TwitchAPIHandler
 {
     private String CLIENT_ID = "";
     private TokenLogger logger;
+
     public TwitchAPIHandler(TokenLogger logger)
     {
         this.logger = logger;
@@ -54,7 +55,7 @@ public class TwitchAPIHandler
         HashMap<String, String> tkMembers = new HashMap<>();
         JSONObject fullreply = getAPIResponse("kraken/teams/teamkitty?api_version=5");
         JSONArray members = fullreply.getJSONArray("users");
-        for(Object o : members)
+        for (Object o : members)
         {
             JSONObject member = (JSONObject) o;
             String name = member.getString("name");

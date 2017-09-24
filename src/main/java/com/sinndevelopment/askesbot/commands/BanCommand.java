@@ -1,5 +1,8 @@
 package com.sinndevelopment.askesbot.commands;
 
+import org.pircbotx.hooks.events.PrivateMessageEvent;
+import org.pircbotx.hooks.types.GenericMessageEvent;
+
 import java.util.List;
 
 public class BanCommand extends ChatCommand
@@ -9,14 +12,21 @@ public class BanCommand extends ChatCommand
         super("ban", PermissionLevel.MODERATOR);
     }
 
+
     @Override
-    protected void onCommand(String channel, String sender, String login, String hostname, List<String> args)
+    protected void onPMCommand(PrivateMessageEvent event, String sender, List<String> args)
     {
-        if(args.size() > 0)
+
+    }
+
+    @Override
+    protected void onCommand(GenericMessageEvent event, String sender, List<String> args)
+    {
+        if (args.size() > 0)
         {
             String strippedUser = args.get(0).replaceAll("@", "");
-            bot.sendChannelMessage("/ban " + strippedUser);
-            bot.sendChannelMessage("/me I literally have no idea who you are. Have a good one!");
+            bot.replyMessage(event, "/ban " + strippedUser);
+            bot.replyMessage(event, "/me I literally have no idea who you are. Have a good one!");
         }
     }
 }

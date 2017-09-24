@@ -1,6 +1,7 @@
 package com.sinndevelopment.askesbot.rewards;
 
 import com.sinndevelopment.askesbot.data.Viewer;
+import org.pircbotx.hooks.types.GenericMessageEvent;
 
 public class ShameReward extends Reward
 {
@@ -9,8 +10,9 @@ public class ShameReward extends Reward
         super(60, "shame");
         super.silent = false;
     }
+
     @Override
-    public boolean redeem(Viewer v, int count)
+    public boolean redeem(Viewer v, int count, GenericMessageEvent event)
     {
         try
         {

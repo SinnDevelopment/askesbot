@@ -2,6 +2,8 @@ package com.sinndevelopment.askesbot.commands;
 
 import com.sinndevelopment.askesbot.data.Viewer;
 import com.sinndevelopment.askesbot.data.YAMLViewerHandler;
+import org.pircbotx.hooks.events.PrivateMessageEvent;
+import org.pircbotx.hooks.types.GenericMessageEvent;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -12,12 +14,19 @@ public class GambleCommand extends ChatCommand
     {
         super("gamble", PermissionLevel.VIEWER);
     }
+
     @Override
-    protected void onCommand(String channel, String sender, String login, String hostname, List<String> args)
+    protected void onPMCommand(PrivateMessageEvent event, String sender, List<String> args)
     {
-        if(args.size() == 0 || args.get(0).equals(""))
+
+    }
+
+    @Override
+    protected void onCommand(GenericMessageEvent event, String sender, List<String> args)
+    {
+        if (args.size() == 0 || args.get(0).equals(""))
         {
-            bot.sendViewerMessage(sender, "Please specify the amount to gamble.");
+            bot.replyMessage(event, sender, "Please specify the amount to gamble.");
             return;
         }
 
@@ -25,21 +34,21 @@ public class GambleCommand extends ChatCommand
 
         Viewer viewer = YAMLViewerHandler.getViewer(sender);
 
-        if(!viewer.charge(gambleAmount))
+        if (!viewer.charge(gambleAmount))
         {
-            bot.sendViewerMessage(sender, "You do not have enough points!");
+            bot.replyMessage(event, sender, "You do not have enough points!");
             return;
         }
         int rand = ThreadLocalRandom.current().nextInt(1, 11);
 
-        if(rand > 5)
+        if (rand > 5)
         {
-            bot.sendViewerMessage(sender, "Congratulations! You won " + gambleAmount + " points");
-            viewer.addPoints(2*gambleAmount);
+            bot.replyMessage(event, sender, "Congratulations! You won " + gambleAmount + " points");
+            viewer.addPoints(2 * gambleAmount);
         }
         else
         {
-            bot.sendViewerMessage(sender, "The house wins this time! You lose " + gambleAmount);
+            bot.replyMessage(event, sender, "The house wins this time! You lose " + gambleAmount);
         }
     }
 }

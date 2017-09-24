@@ -119,7 +119,7 @@ public class StreamLabsHandler
 
     public boolean sendMeow(String user) throws Exception
     {
-        return sendStreamLabs("*"+user + "* says MEOW!",
+        return sendStreamLabs("*" + user + "* says MEOW!",
                 "https://media.giphy.com/media/fyMWf5BQ7eIW4/giphy.gif",
                 "https://s3.ca-central-1.amazonaws.com/askesbot/audio/meow.ogg");
     }

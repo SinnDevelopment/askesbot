@@ -1,5 +1,8 @@
 package com.sinndevelopment.askesbot.commands;
 
+import org.pircbotx.hooks.events.PrivateMessageEvent;
+import org.pircbotx.hooks.types.GenericMessageEvent;
+
 import java.util.List;
 
 public class WatchCommand extends ChatCommand
@@ -10,7 +13,13 @@ public class WatchCommand extends ChatCommand
     }
 
     @Override
-    protected void onCommand(String channel, String sender, String login, String hostname, List<String> args)
+    protected void onPMCommand(PrivateMessageEvent event, String sender, List<String> args)
+    {
+
+    }
+
+    @Override
+    protected void onCommand(GenericMessageEvent event, String sender, List<String> args)
     {
         if (args.size() > 0)
         {
@@ -18,7 +27,7 @@ public class WatchCommand extends ChatCommand
             String strippedUser = args.get(0).replaceAll("@", "");
             if (bot.getTeamKittyMembers().containsKey(strippedUser.toLowerCase()))
             {
-                bot.sendChannelMessage("Please check out my amazing teammate " + strippedUser + " & follow at twitch.tv/" + strippedUser + ". They were last playing "
+                bot.replyMessage(event, "Please check out my amazing teammate " + strippedUser + " & follow at twitch.tv/" + strippedUser + ". They were last playing "
                         + bot.getTeamKittyMembers().get(strippedUser));
 
             }
@@ -30,11 +39,11 @@ public class WatchCommand extends ChatCommand
                 {
                     friend = "wedding ";
                 }
-                if(args.get(0).equalsIgnoreCase("lantheos"))
+                if (args.get(0).equalsIgnoreCase("lantheos"))
                 {
                     friend = "pirate ";
                 }
-                bot.sendChannelMessage("Please check out my " + friend + "friend " + strippedUser + " & follow at twitch.tv/" + strippedUser);
+                bot.replyMessage(event, "Please check out my " + friend + "friend " + strippedUser + " & follow at twitch.tv/" + strippedUser);
             }
             try
             {

@@ -1,16 +1,18 @@
 package com.sinndevelopment.askesbot.commands;
 
 import com.sinndevelopment.askesbot.bot.AskesBot;
+import org.pircbotx.hooks.events.PrivateMessageEvent;
+import org.pircbotx.hooks.types.GenericMessageEvent;
 
 import java.util.Arrays;
 import java.util.List;
 
 public abstract class ChatCommand
 {
+    protected AskesBot bot = AskesBot.getInstance();
     private String name;
     private String prefix = "_";
     private PermissionLevel permissionLevel;
-    protected AskesBot bot = AskesBot.getInstance();
     private String[] aliases = {};
 
     public ChatCommand(String name, PermissionLevel permissionLevel)
@@ -22,41 +24,45 @@ public abstract class ChatCommand
     public ChatCommand(String name, PermissionLevel permissionLevel, String... aliases)
     {
         this(name, permissionLevel);
-        if(aliases != null)
+        if (aliases != null)
         {
             System.arraycopy(aliases, 0, this.aliases, 0, aliases.length);
         }
     }
 
-    public void onMessage(String channel, String sender, String login, String hostname, String message)
+    public void onMessage(String sender, String message, GenericMessageEvent event)
     {
-        if(!checkPermissions(sender, permissionLevel)) return;
+        if (!checkPermissions(sender, permissionLevel))
+        {
+            bot.replyMessage(event, sender, "You do not have permission to use "  + name + ". It requires " + permissionLevel.toString());
+            return;
+        }
 
         List<String> args = Arrays.asList(message.split(" "));
-        if(args.size() >= 1)
+        if (args.size() >= 1)
             args = args.subList(1, args.size());
 
-        onCommand(channel, sender, login, hostname, args);
+        onCommand(event, sender, args);
     }
 
-    public void onPMRecieved(String sender, String login, String hostname, String message)
+    public void onPMRecieved(String sender, String message, PrivateMessageEvent event)
     {
-        if(!checkPermissions(sender, permissionLevel)) return;
+        if (!checkPermissions(sender, permissionLevel))
+        {
+            bot.replyMessage(event, sender, "You do not have permission to use " + name + ". It requires " + permissionLevel.toString());
+            return;
+        }
 
         List<String> args = Arrays.asList(message.split(" "));
-        if(args.size() >= 1)
+        if (args.size() >= 1)
             args = args.subList(1, args.size());
 
-        onPMCommand(sender, sender, login, hostname, args);
+        onPMCommand(event, sender, args);
     }
 
-    private void noPermission(String sender)
-    {
-        bot.sendViewerMessage(sender, "You do not have permission to use " + name);
-    }
+    protected abstract void onPMCommand(PrivateMessageEvent event, String sender, List<String> args);
 
-    protected void onPMCommand(String channel, String sender, String login, String hostname, List<String> args) {}
-    protected abstract void onCommand(String channel, String sender, String login, String hostname, List<String> args);
+    protected abstract void onCommand(GenericMessageEvent event, String sender, List<String> args);
 
     public String getPrefix()
     {
@@ -80,31 +86,28 @@ public abstract class ChatCommand
 
     public boolean isAlias(String s)
     {
-        for(String a : aliases)
-            if(a.equals(prefix+s)) return true;
+        for (String a : aliases)
+            if (a.equals(prefix + s)) return true;
         return false;
     }
 
     private boolean checkPermissions(String sender, PermissionLevel perms)
     {
-        switch (permissionLevel)
+        switch (perms)
         {
             case STREAMER:
-                if(!sender.equalsIgnoreCase("askesienne"))
-                {
-                    noPermission(sender);
+                if (!sender.equalsIgnoreCase("askesienne"))
                     return false;
-                }
+                break;
+            case VIEWER:
+                break;
+            case SUBSCRIBER:
                 break;
             case MODERATOR:
-                if(sender.equalsIgnoreCase("jamiesinn") || sender.equalsIgnoreCase("askesienne"))
+                if (sender.equalsIgnoreCase("jamiesinn") || sender.equalsIgnoreCase("askesienne"))
                     break;
-
-                if(!bot.getModerators().contains(sender.toLowerCase()))
-                {
-                    noPermission(sender);
+                if (!bot.getModerators().contains(sender.toLowerCase()))
                     return false;
-                }
                 break;
         }
         return true;

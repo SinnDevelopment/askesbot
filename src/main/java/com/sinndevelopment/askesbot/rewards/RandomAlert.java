@@ -1,6 +1,7 @@
 package com.sinndevelopment.askesbot.rewards;
 
 import com.sinndevelopment.askesbot.data.Viewer;
+import org.pircbotx.hooks.types.GenericMessageEvent;
 
 public class RandomAlert extends Reward
 {
@@ -9,8 +10,9 @@ public class RandomAlert extends Reward
         super(200, "random");
         super.silent = true;
     }
+
     @Override
-    public boolean redeem(Viewer v, int count)
+    public boolean redeem(Viewer v, int count, GenericMessageEvent event)
     {
         try
         {

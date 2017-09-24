@@ -18,6 +18,7 @@ public class Viewer
         this.username = username;
         this.subscriber = viewer.isSubscriber();
     }
+
     public Viewer(int count, String username, boolean subscriber)
     {
         this.count = count;
@@ -61,6 +62,7 @@ public class Viewer
     {
         addPoints(1);
     }
+
     public void setCount(int count)
     {
         this.count = count;
@@ -69,9 +71,9 @@ public class Viewer
 
     public boolean charge(int amount)
     {
-        if(getAmount() >= amount)
+        if (getAmount() >= amount)
         {
-            setCount(getAmount()-amount);
+            setCount(getAmount() - amount);
             return true;
         }
         return false;

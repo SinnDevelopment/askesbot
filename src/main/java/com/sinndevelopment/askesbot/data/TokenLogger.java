@@ -15,12 +15,12 @@ public class TokenLogger
 
     public void logLatest(String token)
     {
-        Main.getLogger().info(name + ":" +token);
+        Main.getLogger().info(name + ":" + token);
     }
 
     public void updateCurrent(String token)
     {
-        try(BufferedWriter bw = new BufferedWriter(new FileWriter(new File(name+".txt"), false)))
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(new File(name + ".txt"), false)))
         {
             bw.write(token);
         }
@@ -32,12 +32,12 @@ public class TokenLogger
 
     public String getLatest()
     {
-        try(BufferedReader re = new BufferedReader(new FileReader(new File(name+".txt"))))
+        try (BufferedReader re = new BufferedReader(new FileReader(new File(name + ".txt"))))
         {
             String line;
             while ((line = re.readLine()) != null)
             {
-                if(!line.equals(""))
+                if (!line.equals(""))
                     return line;
             }
         }

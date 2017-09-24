@@ -62,6 +62,7 @@ public class AskesBot extends ListenerAdapter
         this.gameWisp = new GameWispHandler(new TokenLogger("gamewisp"));
         this.twitchAPIHandler = new TwitchAPIHandler(new TokenLogger("twitch"));
         this.askesbotWebHandler = new AskesbotWebHandler(new TokenLogger("askesbot-web"));
+
         instance = this;
         commands.add(new AddPointsCommand());
         commands.add(new RedeemCommand());

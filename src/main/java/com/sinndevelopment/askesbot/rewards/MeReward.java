@@ -24,10 +24,11 @@ public class MeReward extends Reward
                             "https://media.giphy.com/media/IXs4NJprHyqzu/giphy.gif",
                             "http://wat.sinnpi.com/dl/cock.ogg");
                 default:
-
+                    bot.getAskesbotWebHandler().getMe();
                     if (bot.getAskesbotWebHandler().getRedeemMeData().containsKey(v.getUsername().toLowerCase()))
                     {
                         AskesbotWebHandler.RedeemMeData data = bot.getAskesbotWebHandler().getRedeemMeData().get(v.getUsername().toLowerCase());
+                        System.out.println(data.toString());
                         return bot.getStreamLabs().sendStreamLabs(data.getMessage(), data.getImageURL(), data.getSoundURL());
                     }
                     bot.replyMessage(event, v.getUsername(), "Sorry, but you're not listed. If you want a custom alert, become a subscriber on Twitch!" +

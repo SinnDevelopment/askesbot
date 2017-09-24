@@ -7,7 +7,6 @@ import com.sinndevelopment.askesbot.hooks.GameWispHandler;
 import com.sinndevelopment.askesbot.hooks.StreamLabsHandler;
 import com.sinndevelopment.askesbot.hooks.TwitchAPIHandler;
 import org.pircbotx.Configuration;
-import org.pircbotx.PircBotX;
 import org.pircbotx.cap.EnableCapHandler;
 import org.pircbotx.exception.IrcException;
 import org.pircbotx.hooks.ListenerAdapter;
@@ -18,6 +17,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.sinndevelopment.askesbot.Main.startTT;
 
 public class AskesBot extends ListenerAdapter
 {
@@ -38,8 +39,7 @@ public class AskesBot extends ListenerAdapter
 
     private HashMap<String, String> teamKittyMembers = new HashMap<>();
 
-    private PircBotX pircBotX;
-
+    private Configuration configuration;
 
     public AskesBot(String oauth) throws IOException, IrcException
     {
@@ -57,6 +57,8 @@ public class AskesBot extends ListenerAdapter
                 .addListener(this)
                 .setVersion("3.0")
                 .buildConfiguration();
+
+        this.configuration = config;
 
         this.streamLabs = new StreamLabsHandler(new TokenLogger("streamlabs"));
         this.gameWisp = new GameWispHandler(new TokenLogger("gamewisp"));
@@ -77,15 +79,12 @@ public class AskesBot extends ListenerAdapter
         commands.forEach(c -> helpString.append(c.getPrefix()).append(c.getName()).append(", "));
         commands.forEach(c -> System.out.println("Registered " + c.getFullCommand() + " command."));
         System.out.println(helpString.toString());
-
-        pircBotX = new PircBotX(config);
-        pircBotX.startBot();
-
+        startTT();
         try
         {
-            this.askesbotWebHandler.getMe();
+            setTeamKittyMembers(getTwitchAPIHandler().getTeamKittyMembers());
         }
-        catch (IOException e)
+        catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -218,5 +217,10 @@ public class AskesBot extends ListenerAdapter
     public AskesbotWebHandler getAskesbotWebHandler()
     {
         return askesbotWebHandler;
+    }
+
+    public Configuration getConfiguration()
+    {
+        return configuration;
     }
 }

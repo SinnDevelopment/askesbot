@@ -33,15 +33,12 @@ public class AskesbotWebHandler
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
         String inputLine;
-        StringBuilder data = new StringBuilder();
         while ((inputLine = in.readLine()) != null)
         {
-            data.append(inputLine);
             RedeemMeData userData = new RedeemMeData(inputLine);
             redeemMeData.put(userData.getUsername(), userData);
         }
         in.close();
-        System.out.println(data.toString());
         System.out.println("Attempted getting _redeem me CSV... R:" + con.getResponseCode());
 
         return con.getResponseCode() == 200;

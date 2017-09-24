@@ -2,6 +2,7 @@ package com.sinndevelopment.askesbot;
 
 import com.sinndevelopment.askesbot.bot.AskesBot;
 import com.sinndevelopment.askesbot.bot.ViewerTT;
+import org.pircbotx.PircBotX;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,7 +18,6 @@ public class Main
     private static String OAUTH_TWITCH = "";
     private static Logger logger = Logger.getLogger("Askesbot");
     private static Timer timer = new Timer();
-    private static AskesBot bot;
 
     public static void main(String[] args) throws Exception
     {
@@ -55,25 +55,18 @@ public class Main
         else
             OAUTH_TWITCH = args[0];
 
-        AskesBot bot = new AskesBot(OAUTH_TWITCH);
 
-        Main.bot = bot;
-        startTT();
-        try
-        {
-            bot.setTeamKittyMembers(bot.getTwitchAPIHandler().getTeamKittyMembers());
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        AskesBot bot = new AskesBot(OAUTH_TWITCH);
+        PircBotX pircBotX = new PircBotX(bot.getConfiguration());
+        pircBotX.startBot();
     }
 
     public static void startTT()
     {
         timer = null;
         timer = new Timer();
-        timer.scheduleAtFixedRate(new ViewerTT(bot), 3000, 60 * 1000);
+        timer.scheduleAtFixedRate(new ViewerTT(), 3000, 60 * 1000);
+        System.out.println("Started Points Timer Task...");
     }
 
     public static Logger getLogger()

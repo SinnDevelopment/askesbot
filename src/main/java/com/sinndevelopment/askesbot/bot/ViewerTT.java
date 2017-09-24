@@ -17,14 +17,7 @@ import java.util.TimerTask;
 
 public class ViewerTT extends TimerTask
 {
-    private static long lastRun;
-    private AskesBot bot;
     private String[] blockedPoints = {"nightbot", "askesbot", "null"};
-
-    public ViewerTT(AskesBot bot)
-    {
-        this.bot = bot;
-    }
 
     public static Map<String, Object> getChatters()
     {
@@ -51,28 +44,15 @@ public class ViewerTT extends TimerTask
         return ret;
     }
 
-    public static long getLastRun()
-    {
-        return lastRun;
-    }
-
-    public static boolean isRunning()
-    {
-        long diff = System.currentTimeMillis() - getLastRun();
-
-        return diff < 1500;
-    }
-
     public void run()
     {
-        lastRun = System.currentTimeMillis();
         Map<String, List<String>> json = (Map<String, List<String>>) getChatters().get("chatters");
         List<String> mods = json.get("moderators");
         List<String> viewers = json.get("viewers");
         viewers.addAll(mods);
         System.out.println(viewers.toString());
-        bot.setModerators(mods);
-        bot.setViewers(viewers);
+        AskesBot.getInstance().setModerators(mods);
+        AskesBot.getInstance().setViewers(viewers);
         boolean blocked;
         for (String s : viewers)
         {
@@ -87,11 +67,6 @@ public class ViewerTT extends TimerTask
             {
                 Viewer v = YAMLViewerHandler.getViewer(s);
                 System.out.println("Added a point to " + v.getUsername());
-                if (v.isSubscriber())
-                {
-                    v.addPoint();
-                    System.out.println("Added an extra point to " + v.getUsername());
-                }
                 v.addPoint();
                 YAMLViewerHandler.saveViewer(v);
                 Main.getLogger().info("Added a point to " + v.getUsername());

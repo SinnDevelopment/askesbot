@@ -2,14 +2,15 @@ package com.sinndevelopment.askesbot.rewards;
 
 import com.sinndevelopment.askesbot.bot.AskesBot;
 import com.sinndevelopment.askesbot.data.Viewer;
+import org.pircbotx.hooks.types.GenericMessageEvent;
 
 public abstract class Reward
 {
+    protected AskesBot bot;
+    protected boolean silent = false;
     private int cost;
     private String name;
     private String[] aliases = {};
-    protected AskesBot bot;
-    protected boolean silent = false;
 
     public Reward(int cost, String name)
     {
@@ -22,11 +23,11 @@ public abstract class Reward
     public Reward(int cost, String name, String... aliases)
     {
         this(cost, name);
-        if(aliases.length != 0 && this.aliases.length != 0)
+        if (aliases.length != 0 && this.aliases.length != 0)
             System.arraycopy(aliases, 0, this.aliases, 0, aliases.length);
     }
 
-    public abstract boolean redeem(Viewer v, int count);
+    public abstract boolean redeem(Viewer v, int count, GenericMessageEvent event);
 
 
     public int getCost()
@@ -46,7 +47,7 @@ public abstract class Reward
 
     public boolean isAlias(String s)
     {
-        for(String a : aliases)
+        for (String a : aliases)
             if (a.equals(s))
                 return true;
         return false;

@@ -1,6 +1,7 @@
 package com.sinndevelopment.askesbot.rewards;
 
 import com.sinndevelopment.askesbot.data.Viewer;
+import org.pircbotx.hooks.types.GenericMessageEvent;
 
 public class PewPewReward extends Reward
 {
@@ -11,7 +12,7 @@ public class PewPewReward extends Reward
     }
 
     @Override
-    public boolean redeem(Viewer v, int count)
+    public boolean redeem(Viewer v, int count, GenericMessageEvent event)
     {
         try
         {

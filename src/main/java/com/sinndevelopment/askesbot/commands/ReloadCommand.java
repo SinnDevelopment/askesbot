@@ -2,6 +2,8 @@ package com.sinndevelopment.askesbot.commands;
 
 import com.sinndevelopment.askesbot.Main;
 import com.sinndevelopment.askesbot.bot.ViewerTT;
+import org.pircbotx.hooks.events.PrivateMessageEvent;
+import org.pircbotx.hooks.types.GenericMessageEvent;
 
 import java.util.List;
 
@@ -11,14 +13,21 @@ public class ReloadCommand extends ChatCommand
     {
         super("reload", PermissionLevel.MODERATOR);
     }
+
     @Override
-    protected void onCommand(String channel, String sender, String login, String hostname, List<String> args)
+    protected void onPMCommand(PrivateMessageEvent event, String sender, List<String> args)
     {
-        if(ViewerTT.isRunning())
+
+    }
+
+    @Override
+    protected void onCommand(GenericMessageEvent event, String sender, List<String> args)
+    {
+        if (ViewerTT.isRunning())
         {
-            bot.sendViewerMessage(sender, "TimerTask already running... but starting anyway.");
+            bot.replyMessage(event, sender, "TimerTask already running... but starting anyway.");
         }
         Main.startTT();
-        bot.sendViewerMessage(sender, "Reloaded Timer Tasks.");
+        bot.replyMessage(event, sender, "Reloaded Timer Tasks.");
     }
 }

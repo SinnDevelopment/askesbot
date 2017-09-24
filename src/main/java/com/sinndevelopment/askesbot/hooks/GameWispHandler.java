@@ -55,9 +55,9 @@ public class GameWispHandler
 
         String urlParameters = "?access_token=" + getAccessToken() +
                 "&type=twitch" +
-                "&user_name="+viewer.getUsername()+
+                "&user_name=" + viewer.getUsername() +
                 "&include=user";
-        URL obj = new URL(url+urlParameters);
+        URL obj = new URL(url + urlParameters);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -77,7 +77,7 @@ public class GameWispHandler
         Main.getLogger().info(jsonObject.toString());
         Main.getLogger().info(response.toString());
 
-        Main.getLogger().info("Attempted Contacting Gamewisp... R:"+con.getResponseCode());
+        Main.getLogger().info("Attempted Contacting Gamewisp... R:" + con.getResponseCode());
 
         boolean active = jsonObject.getJSONArray("data").getJSONObject(0).getString("status").equals("active");
         viewer.setSubscriber(active);

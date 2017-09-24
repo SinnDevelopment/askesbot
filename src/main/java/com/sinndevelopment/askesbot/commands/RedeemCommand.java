@@ -2,80 +2,37 @@ package com.sinndevelopment.askesbot.commands;
 
 import com.sinndevelopment.askesbot.data.Viewer;
 import com.sinndevelopment.askesbot.rewards.*;
+import org.pircbotx.hooks.events.PrivateMessageEvent;
+import org.pircbotx.hooks.types.GenericMessageEvent;
 
 import java.util.List;
 
 public class RedeemCommand extends ChatCommand
 {
-    private Reward[] rewards = {new AlertReward(), new PetReward(), new RegularReward(), new PunchEricReward(), new HALReward(),
-    new TrainsReward(), new SpookReward(), new PewPewReward(), new RandomAlert(), new WhatWhatReward(), new MeowReward(), new MeReward(),
-    new ShameReward()};
+    private Reward[] rewards = {
+            new AlertReward(), new PetReward(), new RegularReward(), new PunchEricReward(), new HALReward(),
+            new TrainsReward(), new SpookReward(), new PewPewReward(), new RandomAlert(), new WhatWhatReward(),
+            new MeowReward(), new MeReward(), new ShameReward()
+    };
     private StringBuilder validRewards = new StringBuilder();
+
     public RedeemCommand()
     {
         super("redeem", PermissionLevel.VIEWER);
-        for(Reward r : rewards)
+        for (Reward r : rewards)
         {
             validRewards.append(r.getName()).append(" (").append(r.getCost()).append(")").append(", ");
         }
     }
 
     @Override
-    public void onCommand(String channel, String sender, String login, String hostname, List<String> args)
+    protected void onPMCommand(PrivateMessageEvent event, String sender, List<String> args)
     {
         Viewer viewer = new Viewer(sender);
 
-        if(args.size() < 1)
+        if (args.size() < 1)
         {
-            bot.sendViewerMessage(sender , "sorry, that's not a valid reward. The valid ones are: "
-                    + validRewards.toString());
-            return;
-        }
-
-        for (Reward r : rewards)
-        {
-            if(args.get(0).equals(r.getName())
-                    || r.isAlias(args.get(0)))
-            {
-                if(viewer.charge(r.getCost()))
-                {
-                    if(r.redeem(viewer, 1))
-                    {
-                        if(sender.equalsIgnoreCase("lantheos") && r.getName().equalsIgnoreCase("meow"))
-                        {
-                            bot.sendViewerMessage(sender, " - no scary messages that don't exist.");
-                            return;
-                        }
-                        if (r.isSilent()) return;
-                        bot.sendViewerMessage(sender, "sending reward...");
-                        bot.sendViewerMessage(sender, "You now have " + viewer.getAmount() + " points");
-                        return;
-                    }
-                    else
-                    {
-                        bot.sendViewerMessage(sender, "Something went wrong with redemption :(");
-                        return;
-                    }
-                }
-                else
-                {
-                    bot.sendViewerMessage(sender, "you do not have the balance required.");
-                    return;
-                }
-            }
-        }
-        if(sender.equalsIgnoreCase("lantheos"))
-            bot.sendViewerMessage(sender, " - no scary messages that don't exist.");
-    }
-
-    @Override
-    public void onPMCommand(String sender, String login, String hostname, String message, List<String> args)
-    {
-        Viewer viewer = new Viewer(sender);
-
-        if(args.size() < 1)
-        {
-            bot.sendUserMessage(sender , "sorry, that's not a valid reward. The valid ones are: "
+            bot.replyMessage(event, sender, "sorry, that's not a valid reward. The valid ones are: "
                     + validRewards.toString());
             return;
         }
@@ -87,26 +44,74 @@ public class RedeemCommand extends ChatCommand
             {
                 if (viewer.charge(r.getCost()))
                 {
-                    if (r.redeem(viewer, 1))
+                    if (r.redeem(viewer, 1, event))
                     {
-                        bot.sendUserMessage(sender, "sending reward...");
-                        bot.sendUserMessage(sender, "You now have " + viewer.getAmount() + " points");
+                        bot.replyMessage(event, sender, "sending reward...");
+                        bot.replyMessage(event, sender, "You now have " + viewer.getAmount() + " points");
                         return;
                     }
                     else
                     {
-                        bot.sendUserMessage(sender, "Something went wrong with redemption :(");
+                        bot.replyMessage(event, sender, "Something went wrong with redemption :(");
                         return;
                     }
                 }
                 else
                 {
-                    bot.sendUserMessage(sender, "you do not have the balance required.");
+                    bot.replyMessage(event, sender, "you do not have the balance required.");
                     return;
                 }
             }
         }
-        bot.sendUserMessage(sender , "sorry, that's not a valid reward. The valid ones are: "
+        bot.replyMessage(event, sender, "sorry, that's not a valid reward. The valid ones are: "
                 + validRewards.toString());
+    }
+
+    @Override
+    protected void onCommand(GenericMessageEvent event, String sender, List<String> args)
+    {
+        Viewer viewer = new Viewer(sender);
+
+        if (args.size() < 1)
+        {
+            bot.replyMessage(event, sender, "sorry, that's not a valid reward. The valid ones are: "
+                    + validRewards.toString());
+            return;
+        }
+
+        for (Reward r : rewards)
+        {
+            if (args.get(0).equals(r.getName())
+                    || r.isAlias(args.get(0)))
+            {
+                if (viewer.charge(r.getCost()))
+                {
+                    if (r.redeem(viewer, 1, event))
+                    {
+                        if (sender.equalsIgnoreCase("lantheos") && r.getName().equalsIgnoreCase("meow"))
+                        {
+                            bot.replyMessage(event, sender, " - no scary messages that don't exist.");
+                            return;
+                        }
+                        if (r.isSilent()) return;
+                        bot.replyMessage(event, sender, "sending reward...");
+                        bot.replyMessage(event, sender, "You now have " + viewer.getAmount() + " points");
+                        return;
+                    }
+                    else
+                    {
+                        bot.replyMessage(event, sender, "Something went wrong with redemption :(");
+                        return;
+                    }
+                }
+                else
+                {
+                    bot.replyMessage(event, sender, "you do not have the balance required.");
+                    return;
+                }
+            }
+        }
+        if (sender.equalsIgnoreCase("lantheos"))
+            bot.replyMessage(event, sender, " - no scary messages that don't exist.");
     }
 }

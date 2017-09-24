@@ -3,7 +3,10 @@ package com.sinndevelopment.askesbot.data;
 import com.sinndevelopment.askesbot.Main;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
@@ -19,16 +22,16 @@ public class YAMLViewerHandler
     {
         name = name.toLowerCase();
         File confDir = new File(configDir);
-        if(!confDir.exists())
+        if (!confDir.exists())
         {
             Main.getLogger().info("Data directory does not exist, creating now.");
             confDir.mkdir();
         }
 
-        try (InputStream in = Files.newInputStream(Paths.get(configDir+name+".yaml")))
+        try (InputStream in = Files.newInputStream(Paths.get(configDir + name + ".yaml")))
         {
             Viewer viewer = yaml.loadAs(in, Viewer.class);
-            if(viewer == null)
+            if (viewer == null)
             {
                 viewer = new Viewer(0, name, false);
             }
@@ -49,7 +52,7 @@ public class YAMLViewerHandler
 
     public static void saveViewer(Viewer viewer)
     {
-        try(FileWriter writer = new FileWriter(new File(configDir + viewer.getUsername() + ".yaml")))
+        try (FileWriter writer = new FileWriter(new File(configDir + viewer.getUsername() + ".yaml")))
         {
             Map<String, Object> data = new HashMap<>();
             data.put("count", viewer.getAmount());

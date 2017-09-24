@@ -3,8 +3,8 @@ package com.sinndevelopment.askesbot.bot;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sinndevelopment.askesbot.Main;
-import com.sinndevelopment.askesbot.data.YAMLViewerHandler;
 import com.sinndevelopment.askesbot.data.Viewer;
+import com.sinndevelopment.askesbot.data.YAMLViewerHandler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,8 +17,8 @@ import java.util.TimerTask;
 
 public class ViewerTT extends TimerTask
 {
-    private AskesBot bot;
     private static long lastRun;
+    private AskesBot bot;
     private String[] blockedPoints = {"nightbot", "askesbot", "null"};
 
     public ViewerTT(AskesBot bot)
@@ -35,13 +35,15 @@ public class ViewerTT extends TimerTask
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             StringBuilder result = new StringBuilder();
             String line;
-            while((line = reader.readLine()) != null)
+            while ((line = reader.readLine()) != null)
             {
                 result.append(line);
             }
             Gson gson = new Gson();
 
-            ret = gson.fromJson(result.toString(), new TypeToken<Map<String, Object>>(){}.getType());
+            ret = gson.fromJson(result.toString(), new TypeToken<Map<String, Object>>()
+            {
+            }.getType());
 
         }
         catch (IOException e)
@@ -49,39 +51,6 @@ public class ViewerTT extends TimerTask
             e.printStackTrace();
         }
         return ret;
-    }
-
-    public void run()
-    {
-        lastRun = System.currentTimeMillis();
-        Map<String, List<String>> json = (Map<String, List<String>>) getChatters().get("chatters");
-        List<String> mods = json.get("moderators");
-        List<String> viewers = json.get("viewers");
-        System.out.println(mods.toString());
-        viewers.addAll(mods);
-        System.out.println(viewers.toString());
-        bot.setModerators(mods);
-        bot.setViewers(viewers);
-        boolean blocked;
-        for(String s : viewers)
-        {
-            blocked = false;
-            s = s.toLowerCase();
-            for(String b : blockedPoints)
-            {
-                if(s.equalsIgnoreCase(b))
-                    blocked = true;
-            }
-            if(!blocked)
-            {
-                Viewer v = YAMLViewerHandler.getViewer(s);
-                //if(v.isSubscriber()) v.addPoint();
-                v.addPoint();
-                YAMLViewerHandler.saveViewer(v);
-                Main.getLogger().info("Added a point to " + v.getUsername());
-                System.out.println("Added a point to " + v.getUsername());
-            }
-        }
     }
 
     public static long getLastRun()
@@ -94,5 +63,41 @@ public class ViewerTT extends TimerTask
         long diff = System.currentTimeMillis() - getLastRun();
 
         return diff < 1500;
+    }
+
+    public void run()
+    {
+        lastRun = System.currentTimeMillis();
+        Map<String, List<String>> json = (Map<String, List<String>>) getChatters().get("chatters");
+        List<String> mods = json.get("moderators");
+        List<String> viewers = json.get("viewers");
+        viewers.addAll(mods);
+        System.out.println(viewers.toString());
+        bot.setModerators(mods);
+        bot.setViewers(viewers);
+        boolean blocked;
+        for (String s : viewers)
+        {
+            blocked = false;
+            s = s.toLowerCase();
+            for (String b : blockedPoints)
+            {
+                if (s.equalsIgnoreCase(b))
+                    blocked = true;
+            }
+            if (!blocked)
+            {
+                Viewer v = YAMLViewerHandler.getViewer(s);
+                System.out.println("Added a point to " + v.getUsername());
+                if (v.isSubscriber())
+                {
+                    v.addPoint();
+                    System.out.println("Added an extra point to " + v.getUsername());
+                }
+                v.addPoint();
+                YAMLViewerHandler.saveViewer(v);
+                Main.getLogger().info("Added a point to " + v.getUsername());
+            }
+        }
     }
 }

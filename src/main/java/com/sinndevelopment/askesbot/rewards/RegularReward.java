@@ -1,6 +1,7 @@
 package com.sinndevelopment.askesbot.rewards;
 
 import com.sinndevelopment.askesbot.data.Viewer;
+import org.pircbotx.hooks.types.GenericMessageEvent;
 
 public class RegularReward extends Reward
 {
@@ -11,10 +12,9 @@ public class RegularReward extends Reward
     }
 
     @Override
-    public boolean redeem(Viewer v, int count)
+    public boolean redeem(Viewer v, int count, GenericMessageEvent event)
     {
-        bot.sendChannelMessage("!regulars add " + v.getUsername());
-
+        bot.replyMessage(event,"!regulars add " + v.getUsername());
         return true;
     }
 }

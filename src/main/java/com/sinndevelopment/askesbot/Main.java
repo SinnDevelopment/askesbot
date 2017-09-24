@@ -2,7 +2,6 @@ package com.sinndevelopment.askesbot;
 
 import com.sinndevelopment.askesbot.bot.AskesBot;
 import com.sinndevelopment.askesbot.bot.ViewerTT;
-import org.jibble.pircbot.IrcException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,7 +19,7 @@ public class Main
     private static Timer timer = new Timer();
     private static AskesBot bot;
 
-    public static void main(String[] args) throws IOException, IrcException
+    public static void main(String[] args) throws Exception
     {
         try
         {
@@ -34,8 +33,6 @@ public class Main
         {
             e.printStackTrace();
         }
-
-        AskesBot bot = new AskesBot();
 
         if (args.length == 0)
         {
@@ -58,12 +55,10 @@ public class Main
         else
             OAUTH_TWITCH = args[0];
 
-        bot.setVerbose(true);
-        bot.connect("irc.chat.twitch.tv", 6667, OAUTH_TWITCH);
-        bot.joinChannel("#askesienne");
+        AskesBot bot = new AskesBot(OAUTH_TWITCH);
+
         Main.bot = bot;
         startTT();
-
         try
         {
             bot.setTeamKittyMembers(bot.getTwitchAPIHandler().getTeamKittyMembers());
@@ -80,6 +75,7 @@ public class Main
         timer = new Timer();
         timer.scheduleAtFixedRate(new ViewerTT(bot), 3000, 60 * 1000);
     }
+
     public static Logger getLogger()
     {
         return logger;

@@ -11,7 +11,7 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.cap.EnableCapHandler;
 import org.pircbotx.exception.IrcException;
 import org.pircbotx.hooks.ListenerAdapter;
-import org.pircbotx.hooks.events.PrivateMessageEvent;
+import org.pircbotx.hooks.events.UnknownEvent;
 import org.pircbotx.hooks.types.GenericMessageEvent;
 
 import java.io.IOException;
@@ -40,9 +40,6 @@ public class AskesBot extends ListenerAdapter
 
     private PircBotX pircBotX;
 
-    private AskesBot()
-    {
-    }
 
     public AskesBot(String oauth) throws IOException, IrcException
     {
@@ -54,9 +51,10 @@ public class AskesBot extends ListenerAdapter
                 .addCapHandler(new EnableCapHandler("twitch.tv/tags"))
                 .addCapHandler(new EnableCapHandler("twitch.tv/commands"))
                 .addServer("irc.twitch.tv")
+                .addAutoJoinChannel("#askesienne")
                 .setName("askesbot")
                 .setServerPassword(oauth)
-                .addListener(new AskesBot())
+                .addListener(this)
                 .setVersion("3.0")
                 .buildConfiguration();
 
@@ -75,6 +73,13 @@ public class AskesBot extends ListenerAdapter
         commands.add(new ReloadCommand());
         commands.add(new GambleCommand());
 
+        commands.forEach(c -> helpString.append(c.getPrefix()).append(c.getName()).append(", "));
+        commands.forEach(c -> System.out.println("Registered " + c.getFullCommand() + " command."));
+        System.out.println(helpString.toString());
+
+        pircBotX = new PircBotX(config);
+        pircBotX.startBot();
+
         try
         {
             this.askesbotWebHandler.getMe();
@@ -83,11 +88,6 @@ public class AskesBot extends ListenerAdapter
         {
             e.printStackTrace();
         }
-
-        commands.forEach(c -> helpString.append(c.getPrefix()).append(c.getName()).append(", "));
-
-        pircBotX = new PircBotX(config);
-        pircBotX.startBot();
     }
 
     public static AskesBot getInstance()
@@ -97,56 +97,41 @@ public class AskesBot extends ListenerAdapter
 
 
     @Override
-    public void onGenericMessage(final GenericMessageEvent event) throws Exception
+    public void onUnknown(UnknownEvent event) throws Exception
+    {
+        System.out.println("Unknown Event!" + event.getLine());
+    }
+
+    @Override
+    public void onGenericMessage(GenericMessageEvent event) throws Exception
     {
         String message = event.getMessage();
-        System.out.println(message);
         String sender = event.getUser().getNick();
 
-        if (event instanceof PrivateMessageEvent)
+        if(message.startsWith("_"))
         {
-            PrivateMessageEvent pmevent = (PrivateMessageEvent) event;
-            ChatCommand command = isCommand(message);
+            if (message.startsWith("_help"))
+            {
+                this.replyMessage(event, "@" + sender + " my commands are: " + helpString.toString());
+                return;
+            }
+
+            ChatCommand command = null;
+            for (ChatCommand cmd : commands)
+                if (message.startsWith(cmd.getFullCommand()))
+                    command = cmd;
+
+
             if (command != null)
             {
                 if (isCooldown(sender))
                     return;
 
-                command.onPMRecieved(sender, message.substring(
-                        command.getPrefix().length() + command.getName().length()), pmevent);
+                command.onMessage(sender, message.substring(
+                        command.getPrefix().length() + command.getName().length()), event);
                 setCooldown(sender);
             }
-            return;
         }
-
-        if (message.startsWith("_help"))
-        {
-            this.replyMessage(event, "@" + sender + " my commands are: " + helpString);
-            return;
-        }
-
-        ChatCommand command = isCommand(message);
-        if (command != null)
-        {
-            if (isCooldown(sender))
-                return;
-
-            command.onMessage(sender, message.substring(
-                    command.getPrefix().length() + command.getName().length()), event);
-            setCooldown(sender);
-        }
-
-    }
-
-    private ChatCommand isCommand(String chat)
-    {
-        for (ChatCommand command : commands)
-        {
-            if (chat.startsWith(command.getFullCommand())
-                    || command.isAlias(chat))
-                return command;
-        }
-        return null;
     }
 
     public List<String> getModerators()

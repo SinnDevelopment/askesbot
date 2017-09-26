@@ -49,7 +49,7 @@ public class StreamLabsHandler
 
     private String getAccessToken() throws Exception
     {
-        String url = "https://sinndevelopment.com/oauth/streamlabs/token.php?refresh_token=" + REFRESH_TOKEN;
+        String url = "https://twitch.sinndevelopment.com/oauth/streamlabs/token.php?refresh_token=" + REFRESH_TOKEN;
 
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -131,7 +131,7 @@ public class StreamLabsHandler
 
     public boolean sendStreamLabs(String message, String image, String sound) throws Exception
     {
-        String url = "https://sinndevelopment.com/oauth/streamlabs/alert.php";
+        String url = "https://twitch.sinndevelopment.com/oauth/streamlabs/alert.php";
 
         String urlParameters = "?access_token=" + getAccessToken() +
                 "&message=" + message +

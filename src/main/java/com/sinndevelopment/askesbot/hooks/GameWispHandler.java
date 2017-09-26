@@ -23,7 +23,7 @@ public class GameWispHandler
 
     private String getAccessToken() throws Exception
     {
-        String url = "https://sinndevelopment.com/oauth/gamewisp/token.php?refresh_token=" + REFRESH_TOKEN;
+        String url = "https://twitch.sinndevelopment.com/oauth/gamewisp/token.php?refresh_token=" + REFRESH_TOKEN;
 
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -51,7 +51,7 @@ public class GameWispHandler
 
     public boolean isSubscriber(Viewer viewer) throws Exception
     {
-        String url = "https://sinndevelopment.com/oauth/gamewisp/subscribers.php";
+        String url = "https://twitch.sinndevelopment.com/oauth/gamewisp/subscribers.php";
 
         String urlParameters = "?access_token=" + getAccessToken() +
                 "&type=twitch" +

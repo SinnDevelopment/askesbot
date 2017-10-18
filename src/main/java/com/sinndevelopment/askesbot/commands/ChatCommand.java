@@ -34,7 +34,7 @@ public abstract class ChatCommand
     {
         if (!checkPermissions(sender, permissionLevel))
         {
-            bot.replyMessage(event, sender, "You do not have permission to use "  + name + ". It requires " + permissionLevel.toString());
+            bot.replyMessage(event, sender, "You do not have permission to use " + name + ". It requires " + permissionLevel.toString());
             return;
         }
 

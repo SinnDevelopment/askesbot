@@ -1,22 +1,26 @@
 package com.sinndevelopment.askesbot.twitchcap;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.HashMap;
 
 public abstract class TwitchCapability
 {
-    private Pattern pattern;
+    private HashMap<String, String> tags = new HashMap<>();
+    private String typeFlag;
 
-    public TwitchCapability(String rawRegex)
+    public TwitchCapability(HashMap<String, String> tags)
     {
-        pattern = Pattern.compile(rawRegex);
+        this.tags = tags;
     }
 
-    public boolean matches(String line)
+    TwitchCapability(String typeFlag)
     {
-        Matcher matcher = pattern.matcher(line);
-        return matcher.find();
+        this.typeFlag = typeFlag;
     }
 
-    protected abstract void handle();
+    public abstract void handle();
+
+    public String getTypeFlag()
+    {
+        return typeFlag;
+    }
 }

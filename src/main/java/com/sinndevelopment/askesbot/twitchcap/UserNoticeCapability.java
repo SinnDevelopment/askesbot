@@ -4,11 +4,11 @@ public class UserNoticeCapability extends TwitchCapability
 {
     public UserNoticeCapability()
     {
-        super("");
+        super("USERNOTICE");
     }
 
     @Override
-    protected void handle()
+    public void handle()
     {
 
     }

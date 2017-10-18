@@ -3,10 +3,9 @@ package com.sinndevelopment.askesbot.bot;
 import com.google.common.collect.ImmutableMap;
 import com.sinndevelopment.askesbot.commands.*;
 import com.sinndevelopment.askesbot.data.TokenLogger;
-import com.sinndevelopment.askesbot.hooks.AskesbotWebHandler;
-import com.sinndevelopment.askesbot.hooks.GameWispHandler;
-import com.sinndevelopment.askesbot.hooks.StreamLabsHandler;
-import com.sinndevelopment.askesbot.hooks.TwitchAPIHandler;
+import com.sinndevelopment.askesbot.data.Viewer;
+import com.sinndevelopment.askesbot.hooks.*;
+import com.sinndevelopment.askesbot.twitchcap.TwitchCapability;
 import org.pircbotx.Configuration;
 import org.pircbotx.cap.EnableCapHandler;
 import org.pircbotx.exception.IrcException;
@@ -38,6 +37,7 @@ public class AskesBot extends ListenerAdapter
     private GameWispHandler gameWisp;
     private TwitchAPIHandler twitchAPIHandler;
     private AskesbotWebHandler askesbotWebHandler;
+    private TwitchCapHandler capHandler;
 
     private HashMap<String, String> teamKittyMembers = new HashMap<>();
 
@@ -66,6 +66,7 @@ public class AskesBot extends ListenerAdapter
         this.gameWisp = new GameWispHandler(new TokenLogger("gamewisp"));
         this.twitchAPIHandler = new TwitchAPIHandler(new TokenLogger("twitch"));
         this.askesbotWebHandler = new AskesbotWebHandler(new TokenLogger("askesbot-web"));
+        this.capHandler = new TwitchCapHandler();
 
         instance = this;
         commands.add(new AddPointsCommand());
@@ -80,7 +81,9 @@ public class AskesBot extends ListenerAdapter
 
         commands.forEach(c -> helpString.append(c.getPrefix()).append(c.getName()).append(", "));
         commands.forEach(c -> System.out.println("Registered " + c.getFullCommand() + " command."));
+
         System.out.println(helpString.toString());
+
         startTT();
         try
         {
@@ -101,36 +104,52 @@ public class AskesBot extends ListenerAdapter
     @Override
     public void onUnknown(UnknownEvent event) throws Exception
     {
-        System.out.println("Unknown Event!" + event.getLine());
-    }
+        System.out.println("Unknown Event! '" + event.getLine() + "'");
 
+        capHandler.getCaps().forEach(
+                cap ->
+                {
+                    String flag = cap.getTypeFlag();
+                    // Handle checking
+                }
+        );
+        for (TwitchCapability cap : capHandler.getCaps())
+        {
+            System.out.println(cap.getTypeFlag());
+        }
+    }
 
     @Override
     public void onMessage(MessageEvent event) throws Exception
     {
         ImmutableMap<String, String> tags = event.getV3Tags();
 
-        System.out.println(tags.toString());
-
-        if(tags.get("mod").equals("1"))
-            System.out.println("User is mod.");
-        if(tags.get("subscriber").equals("1"))
-            System.out.println("User is sub");
-        if(tags.get("badges").contains("broadcaster"))
-            System.out.println("User is broadcaster");
-
-
-        //TODO: Handle tags for permissions.
-
         String message = event.getMessage();
-        if(event.getUser() == null)
+        if (event.getUser() == null)
         {
             return;
         }
 
         String sender = event.getUser().getNick();
+        Viewer viewer = new Viewer(sender);
 
-        if(message.startsWith("_"))
+        // Permissions handling - may be a bit laggy with a ton of users chatting at once.
+        if (tags.containsKey("mod") || tags.containsKey("subscriber") || tags.containsKey("badges"))
+        {
+            if (tags.containsKey("mod"))
+            {
+                if (tags.get("mod").equals("1"))
+                    if (!moderators.contains(viewer.getUsername()))
+                        moderators.add(viewer.getUsername());
+                    else
+                        moderators.remove(viewer.getUsername());
+            }
+
+            if (tags.containsKey("subscriber"))
+                viewer.setSubscriber(tags.get("subscriber").equals("1"));
+        }
+
+        if (message.startsWith("_"))
         {
             if (message.startsWith("_help"))
             {
@@ -139,10 +158,13 @@ public class AskesBot extends ListenerAdapter
             }
 
             ChatCommand command = null;
-            for (ChatCommand cmd : commands)
-                if (message.startsWith(cmd.getFullCommand()))
-                    command = cmd;
 
+            for (ChatCommand cmd : commands)
+                if (message.toLowerCase().startsWith(cmd.getFullCommand()))
+                {
+                    command = cmd;
+                    break;
+                }
 
             if (command != null)
             {
@@ -181,7 +203,7 @@ public class AskesBot extends ListenerAdapter
         event.respondWith(message);
     }
 
-    public void replyMessage(GenericMessageEvent event,  String user, String message)
+    public void replyMessage(GenericMessageEvent event, String user, String message)
     {
         replyMessage(event, "@" + user + ": " + message);
     }

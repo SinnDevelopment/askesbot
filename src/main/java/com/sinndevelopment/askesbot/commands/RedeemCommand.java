@@ -81,18 +81,13 @@ public class RedeemCommand extends ChatCommand
 
         for (Reward r : rewards)
         {
-            if (args.get(0).equals(r.getName())
+            if (args.get(0).equalsIgnoreCase(r.getName())
                     || r.isAlias(args.get(0)))
             {
                 if (viewer.charge(r.getCost()))
                 {
                     if (r.redeem(viewer, 1, event))
                     {
-                        if (sender.equalsIgnoreCase("lantheos") && r.getName().equalsIgnoreCase("meow"))
-                        {
-                            bot.replyMessage(event, sender, " - no scary messages that don't exist.");
-                            return;
-                        }
                         if (r.isSilent()) return;
                         bot.replyMessage(event, sender, "sending reward...");
                         bot.replyMessage(event, sender, "You now have " + viewer.getAmount() + " points");
@@ -113,5 +108,7 @@ public class RedeemCommand extends ChatCommand
         }
         if (sender.equalsIgnoreCase("lantheos"))
             bot.replyMessage(event, sender, " - no scary messages that don't exist.");
+        else bot.replyMessage(event, sender, "sorry, that's not a valid reward. The valid ones are: "
+                + validRewards.toString());
     }
 }

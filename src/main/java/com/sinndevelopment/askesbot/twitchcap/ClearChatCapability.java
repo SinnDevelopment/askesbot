@@ -4,13 +4,12 @@ public class ClearChatCapability extends TwitchCapability
 {
     public ClearChatCapability()
     {
-        super("");
+        super("CLEARCHAT");
     }
 
     @Override
-    protected void handle()
+    public void handle()
     {
         String user;
-
     }
 }

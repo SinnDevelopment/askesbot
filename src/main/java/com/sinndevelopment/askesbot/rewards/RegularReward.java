@@ -14,7 +14,7 @@ public class RegularReward extends Reward
     @Override
     public boolean redeem(Viewer v, int count, GenericMessageEvent event)
     {
-        bot.replyMessage(event,"!regulars add " + v.getUsername());
+        bot.replyMessage(event, "!regulars add " + v.getUsername());
         return true;
     }
 }

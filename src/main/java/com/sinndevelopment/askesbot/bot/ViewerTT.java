@@ -34,7 +34,9 @@ public class ViewerTT extends TimerTask
             }
             Gson gson = new Gson();
 
-            ret = gson.fromJson(result.toString(), new TypeToken<Map<String, Object>>(){}.getType());
+            ret = gson.fromJson(result.toString(), new TypeToken<Map<String, Object>>()
+            {
+            }.getType());
 
         }
         catch (IOException e)
@@ -51,7 +53,6 @@ public class ViewerTT extends TimerTask
         List<String> viewers = json.get("viewers");
         viewers.addAll(mods);
         System.out.println(viewers.toString());
-        AskesBot.getInstance().setModerators(mods);
         AskesBot.getInstance().setViewers(viewers);
         boolean blocked;
         for (String s : viewers)

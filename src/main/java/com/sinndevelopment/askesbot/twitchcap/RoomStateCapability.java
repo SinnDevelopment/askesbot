@@ -4,11 +4,11 @@ public class RoomStateCapability extends TwitchCapability
 {
     public RoomStateCapability()
     {
-        super("");
+        super("ROOMSTATE");
     }
 
     @Override
-    protected void handle()
+    public void handle()
     {
 
     }

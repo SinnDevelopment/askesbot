@@ -1,5 +1,6 @@
 package com.sinndevelopment.askesbot.bot;
 
+import com.google.common.collect.ImmutableMap;
 import com.sinndevelopment.askesbot.commands.*;
 import com.sinndevelopment.askesbot.data.TokenLogger;
 import com.sinndevelopment.askesbot.hooks.AskesbotWebHandler;
@@ -10,6 +11,7 @@ import org.pircbotx.Configuration;
 import org.pircbotx.cap.EnableCapHandler;
 import org.pircbotx.exception.IrcException;
 import org.pircbotx.hooks.ListenerAdapter;
+import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.UnknownEvent;
 import org.pircbotx.hooks.types.GenericMessageEvent;
 
@@ -102,10 +104,30 @@ public class AskesBot extends ListenerAdapter
         System.out.println("Unknown Event!" + event.getLine());
     }
 
+
     @Override
-    public void onGenericMessage(GenericMessageEvent event) throws Exception
+    public void onMessage(MessageEvent event) throws Exception
     {
+        ImmutableMap<String, String> tags = event.getV3Tags();
+
+        System.out.println(tags.toString());
+
+        if(tags.get("mod").equals("1"))
+            System.out.println("User is mod.");
+        if(tags.get("subscriber").equals("1"))
+            System.out.println("User is sub");
+        if(tags.get("badges").contains("broadcaster"))
+            System.out.println("User is broadcaster");
+
+
+        //TODO: Handle tags for permissions.
+
         String message = event.getMessage();
+        if(event.getUser() == null)
+        {
+            return;
+        }
+
         String sender = event.getUser().getNick();
 
         if(message.startsWith("_"))

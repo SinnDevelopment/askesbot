@@ -95,7 +95,7 @@ public abstract class ChatCommand
     {
         switch (perms)
         {
-            case STREAMER:
+            case BROADCASTER:
                 if (!sender.equalsIgnoreCase("askesienne"))
                     return false;
                 break;

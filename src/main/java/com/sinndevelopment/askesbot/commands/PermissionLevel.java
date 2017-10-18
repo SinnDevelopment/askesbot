@@ -5,5 +5,5 @@ public enum PermissionLevel
     VIEWER,
     SUBSCRIBER,
     MODERATOR,
-    STREAMER
+    BROADCASTER,
 }

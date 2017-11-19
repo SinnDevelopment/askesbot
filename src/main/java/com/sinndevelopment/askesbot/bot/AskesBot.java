@@ -139,10 +139,12 @@ public class AskesBot extends ListenerAdapter
             if (tags.containsKey("mod"))
             {
                 if (tags.get("mod").equals("1"))
+                {
                     if (!moderators.contains(viewer.getUsername()))
                         moderators.add(viewer.getUsername());
-                    else
-                        moderators.remove(viewer.getUsername());
+                }
+                else
+                    moderators.remove(viewer.getUsername());
             }
 
             if (tags.containsKey("subscriber"))

@@ -27,7 +27,7 @@ public class WatchCommand extends ChatCommand
             String strippedUser = args.get(0).replaceAll("@", "");
             if (bot.getTeamKittyMembers().containsKey(strippedUser.toLowerCase()))
             {
-                bot.replyMessage(event, "Please check out my amazing teammate " + strippedUser + " & follow at twitch.tv/" + strippedUser + ". They were last playing "
+                bot.replyMessage(event, "Please check out my amazing teammate " + strippedUser + " & follow at twitch.tv/" + strippedUser + " - They were last playing "
                         + bot.getTeamKittyMembers().get(strippedUser));
 
             }

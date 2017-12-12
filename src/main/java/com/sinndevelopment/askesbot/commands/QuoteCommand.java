@@ -51,26 +51,45 @@ public class QuoteCommand extends ChatCommand
                     return;
                 }
                 StringBuilder builder = new StringBuilder();
-                args.subList(1, args.size()-1).forEach(a -> builder.append(a).append(" "));
+                args.subList(1, args.size()).forEach(a -> builder.append(a).append(" "));
                 String message = builder.toString();
+                updateCache();
                 int id = cache.size();
-                writer.write(id + "~" + message);
+                writer.write(id + "~" + message + "\n");
+                writer.flush();
+
                 bot.replyMessage(event, sender, "Successfully added quote with ID: " + id);
             }
             catch (IOException e)
             {
                 e.printStackTrace();
             }
-            updateCache();
         }
         else if (args.size() == 1)
         {
             int id = Integer.parseInt(args.get(0));
-            updateCache();
-            if (cache.containsKey(id))
-                bot.replyMessage(event, "Quote #" + id + ": " + cache.get(id).getMessage());
-            else
+            final boolean[] found = {false};
+            try
+            {
+                List<String> lines = Files.readAllLines(new File("quotes.csv").toPath());
+                lines.forEach(line -> {
+                    QuoteData data = QuoteData.fromLine(line);
+                    cache.put(data.getId(), data);
+                    if(data.getId() == id)
+                    {
+                        bot.replyMessage(event, "Quote #" + id + ": " + cache.get(id).getMessage());
+                        found[0] =true;
+                    }
+                });
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            if(!found[0])
+            {
                 bot.replyMessage(event, sender, "Could not find quote with ID " + id);
+            }
         }
         else
         {
@@ -81,10 +100,10 @@ public class QuoteCommand extends ChatCommand
     private void updateCache()
     {
         cache.clear();
-
+        List<String> lines;
         try
         {
-            List<String> lines = Files.readAllLines(new File("quotes.csv").toPath());
+            lines = Files.readAllLines(new File("quotes.csv").toPath());
             lines.forEach(line -> {
                 QuoteData data = QuoteData.fromLine(line);
                 cache.put(data.getId(), data);
@@ -94,6 +113,7 @@ public class QuoteCommand extends ChatCommand
         {
             e.printStackTrace();
         }
+
 
     }
 }

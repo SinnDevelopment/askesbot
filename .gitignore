@@ -57,7 +57,9 @@ buildNumber.properties
 # Exclude maven wrapper
 !/.mvn/wrapper/maven-wrapper.jar
 
-api.txt
-
 viewers/
 
+*.txt
+*.csv
+askes.log*.*
+askes.log

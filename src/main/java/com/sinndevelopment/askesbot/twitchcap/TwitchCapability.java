@@ -4,7 +4,7 @@ import org.pircbotx.hooks.events.UnknownEvent;
 
 public abstract class TwitchCapability
 {
-    private UnknownEvent event;
+    protected UnknownEvent event;
     private String typeFlag;
 
     public TwitchCapability(UnknownEvent event)

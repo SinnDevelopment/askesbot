@@ -10,6 +10,7 @@ public class ClearChatCapability extends TwitchCapability
     @Override
     public void handle()
     {
-        String user;
+        System.out.println("Unknown event was a clearchat.");
+        this.event.getBot().sendIRC().message("#askesienne", "I literally have no idea who you are. Have a good one!");
     }
 }

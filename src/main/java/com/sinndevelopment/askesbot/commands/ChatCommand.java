@@ -112,4 +112,9 @@ public abstract class ChatCommand
         }
         return true;
     }
+
+    public void setBot(AskesBot bot)
+    {
+        this.bot = bot;
+    }
 }

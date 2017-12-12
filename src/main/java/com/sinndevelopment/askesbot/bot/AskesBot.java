@@ -5,7 +5,6 @@ import com.sinndevelopment.askesbot.commands.*;
 import com.sinndevelopment.askesbot.data.TokenLogger;
 import com.sinndevelopment.askesbot.data.Viewer;
 import com.sinndevelopment.askesbot.hooks.*;
-import com.sinndevelopment.askesbot.twitchcap.TwitchCapability;
 import org.pircbotx.Configuration;
 import org.pircbotx.cap.EnableCapHandler;
 import org.pircbotx.exception.IrcException;
@@ -43,6 +42,10 @@ public class AskesBot extends ListenerAdapter
 
     private Configuration configuration;
 
+    public AskesBot()
+    {
+        init();
+    }
     public AskesBot(String oauth) throws IOException, IrcException
     {
         Configuration config = new Configuration.Builder()
@@ -61,7 +64,11 @@ public class AskesBot extends ListenerAdapter
                 .buildConfiguration();
 
         this.configuration = config;
+        init();
+    }
 
+    private void init()
+    {
         this.streamLabs = new StreamLabsHandler(new TokenLogger("streamlabs"));
         this.gameWisp = new GameWispHandler(new TokenLogger("gamewisp"));
         this.twitchAPIHandler = new TwitchAPIHandler(new TokenLogger("twitch"));
@@ -78,6 +85,7 @@ public class AskesBot extends ListenerAdapter
         commands.add(new BanCommand());
         commands.add(new ReloadCommand());
         commands.add(new GambleCommand());
+        commands.add(new QuoteCommand());
 
         commands.forEach(c -> helpString.append(c.getPrefix()).append(c.getName()).append(", "));
         commands.forEach(c -> System.out.println("Registered " + c.getFullCommand() + " command."));
@@ -105,18 +113,10 @@ public class AskesBot extends ListenerAdapter
     public void onUnknown(UnknownEvent event) throws Exception
     {
         System.out.println("Unknown Event! '" + event.getLine() + "'");
-
+        String[] spacesSplit = event.getLine().split(" ");
         capHandler.getCaps().forEach(
-                cap ->
-                {
-                    String flag = cap.getTypeFlag();
-                    // Handle checking
-                }
+                c -> { if(c.getTypeFlag().equalsIgnoreCase(spacesSplit[1])) c.handle(); }
         );
-        for (TwitchCapability cap : capHandler.getCaps())
-        {
-            System.out.println(cap.getTypeFlag());
-        }
     }
 
     @Override

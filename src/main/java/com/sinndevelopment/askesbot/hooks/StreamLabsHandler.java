@@ -129,6 +129,12 @@ public class StreamLabsHandler
         return sendStreamLabs("", "https://www.transparenttextures.com/patterns/asfalt-light.png", "https://s3.ca-central-1.amazonaws.com/askesbot/audio/shame.ogg");
     }
 
+    public boolean sendDaddy(String user) throws Exception
+    {
+        return sendStreamLabs("", "https://www.transparenttextures.com/patterns/asfalt-light.png",
+                "https://s3.ca-central-1.amazonaws.com/askesbot/audio/HellDaddy.ogg");
+    }
+
     public boolean sendStreamLabs(String message, String image, String sound) throws Exception
     {
         String url = "https://twitch.sinndevelopment.com/oauth/streamlabs/alert.php";

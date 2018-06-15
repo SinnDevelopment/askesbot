@@ -12,7 +12,7 @@ public class RedeemCommand extends ChatCommand
     private Reward[] rewards = {
             new AlertReward(), new PetReward(), new RegularReward(), new PunchEricReward(), new HALReward(),
             new TrainsReward(), new SpookReward(), new PewPewReward(), new RandomAlert(), new WhatWhatReward(),
-            new MeowReward(), new MeReward(), new ShameReward()
+            new MeowReward(), new MeReward(), new ShameReward(), new DaddyReward()
     };
     private StringBuilder validRewards = new StringBuilder();
 
@@ -90,7 +90,7 @@ public class RedeemCommand extends ChatCommand
                     {
                         if (r.isSilent()) return;
                         bot.replyMessage(event, sender, "sending reward...");
-                        bot.replyMessage(event, sender, "You now have " + viewer.getAmount() + " points");
+                        //bot.replyMessage(event, sender, "You now have " + viewer.getAmount() + " points");
                         return;
                     }
                     else

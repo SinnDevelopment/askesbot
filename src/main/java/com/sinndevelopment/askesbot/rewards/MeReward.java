@@ -22,7 +22,7 @@ public class MeReward extends Reward
                 case "lantheos":
                     return bot.getStreamLabs().sendStreamLabs("Hi I'm *Lantheos*...",
                             "https://media.giphy.com/media/IXs4NJprHyqzu/giphy.gif",
-                            "http://wat.sinnpi.com/dl/cock.ogg");
+                            "https://s3.ca-central-1.amazonaws.com/askesbot/audio/cock.ogg");
                 default:
                     bot.getAskesbotWebHandler().getMe();
                     if (bot.getAskesbotWebHandler().getRedeemMeData().containsKey(v.getUsername().toLowerCase()))

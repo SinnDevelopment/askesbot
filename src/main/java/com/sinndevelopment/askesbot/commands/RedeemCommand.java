@@ -12,7 +12,7 @@ public class RedeemCommand extends ChatCommand
     private Reward[] rewards = {
             new AlertReward(), new PetReward(), new RegularReward(), new PunchEricReward(), new HALReward(),
             new TrainsReward(), new SpookReward(), new PewPewReward(), new RandomAlert(), new WhatWhatReward(),
-            new MeowReward(), new MeReward(), new ShameReward(), new DaddyReward()
+            new MeowReward(), new MeReward(), new ShameReward(), new DaddyReward(), new CanadaReward()
     };
     private StringBuilder validRewards = new StringBuilder();
 

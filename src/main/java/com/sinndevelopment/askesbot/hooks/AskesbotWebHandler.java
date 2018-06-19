@@ -23,7 +23,7 @@ public class AskesbotWebHandler
     public boolean getMe() throws IOException
     {
         redeemMeData.clear();
-        String url = "https://askesbot.com/redeem-me.csv";
+        String url = "http://askesbot.com/redeem-me.csv";
 
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();

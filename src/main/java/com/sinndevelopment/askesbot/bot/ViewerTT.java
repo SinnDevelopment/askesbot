@@ -66,11 +66,21 @@ public class ViewerTT extends TimerTask
             }
             if (!blocked)
             {
-                Viewer v = YAMLViewerHandler.getViewer(s);
-                System.out.println("Added a point to " + v.getUsername());
-                v.addPoint();
-                YAMLViewerHandler.saveViewer(v);
-                Main.getLogger().info("Added a point to " + v.getUsername());
+                try
+                {
+                    Viewer v = YAMLViewerHandler.getViewer(s);
+
+
+                    System.out.println("Added a point to " + v.getUsername());
+                    v.addPoint();
+                    YAMLViewerHandler.saveViewer(v);
+                    Main.getLogger().info("Added a point to " + v.getUsername());
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
             }
         }
     }

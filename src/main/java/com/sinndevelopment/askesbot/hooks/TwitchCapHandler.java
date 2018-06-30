@@ -15,6 +15,7 @@ public class TwitchCapHandler
         twitchCapabilityList.add(new PrivateMessageCapability());
         twitchCapabilityList.add(new RoomStateCapability());
         twitchCapabilityList.add(new UserNoticeCapability());
+        twitchCapabilityList.add(new ReconnectCapability());
     }
 
     public List<TwitchCapability> getCaps()

@@ -18,7 +18,7 @@ public class Main
     private static String OAUTH_TWITCH = "";
     private static Logger logger = Logger.getLogger("Askesbot");
     private static Timer timer = new Timer();
-
+    private static PircBotX pircBotX;
     public static void main(String[] args) throws Exception
     {
         try
@@ -57,8 +57,13 @@ public class Main
 
 
         AskesBot bot = new AskesBot(OAUTH_TWITCH);
-        PircBotX pircBotX = new PircBotX(bot.getConfiguration());
+        pircBotX = new PircBotX(bot.getConfiguration());
         pircBotX.startBot();
+    }
+
+    public static void reconnect()
+    {
+        pircBotX.stopBotReconnect();
     }
 
     public static void startTT()

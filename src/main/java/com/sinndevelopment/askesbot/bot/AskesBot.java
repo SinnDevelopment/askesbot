@@ -62,7 +62,6 @@ public class AskesBot extends ListenerAdapter
                 .addListener(this)
                 .setVersion("3.0")
                 .buildConfiguration();
-
         this.configuration = config;
         init();
     }

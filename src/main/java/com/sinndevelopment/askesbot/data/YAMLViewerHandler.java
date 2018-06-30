@@ -8,7 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,14 +37,11 @@ public class YAMLViewerHandler
 
             return viewer;
         }
-        catch (NoSuchFileException e)
-        {
-            Main.getLogger().info("Userdata file for " + name + " was not found. Creating now with base data.");
-            return new Viewer(0, name, false);
-        }
-        catch (IOException e)
+        catch (Exception e)
         {
             e.printStackTrace();
+            Main.getLogger().info("User: " + name);
+            Main.getLogger().info("Userdata file for " + name + " was not found. Creating now with base data.");
             return new Viewer(0, name, false);
         }
     }

@@ -14,7 +14,6 @@ public class MuppetReward extends Reward
     {
         try
         {
-            return bot.getStreamLabs().sendMuppet(v.getUsername());
         }
         catch (Exception e)
         {

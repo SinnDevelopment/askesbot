@@ -29,6 +29,10 @@ public abstract class Reward
 
     public abstract boolean redeem(Viewer v, int count, GenericMessageEvent event);
 
+    public void setCost(int cost)
+    {
+        this.cost = cost;
+    }
 
     public int getCost()
     {

@@ -6,7 +6,7 @@ public class ReconnectCapability extends TwitchCapability
 {
     public ReconnectCapability()
     {
-        super("RECONNECT");
+        super(":tmi.twitch.tv RECONNECT");
     }
 
     @Override

@@ -10,9 +10,7 @@ import java.util.List;
 public class RedeemCommand extends ChatCommand
 {
     private Reward[] rewards = {
-            new AlertReward(), new PetReward(), new RegularReward(), new PunchEricReward(), new HALReward(),
-            new TrainsReward(), new SpookReward(), new PewPewReward(), new RandomAlert(), new WhatWhatReward(),
-            new MeowReward(), new MeReward(), new ShameReward(), new DaddyReward(), new CanadaReward(), new MuppetReward()
+            new PetReward(), new RegularReward(), new PunchEricReward(), new MuppetReward()
     };
     private StringBuilder validRewards = new StringBuilder();
 
@@ -106,6 +104,14 @@ public class RedeemCommand extends ChatCommand
                 }
             }
         }
+
+        StreamlabsReward streamlabs = new StreamlabsReward(args.get(0));
+        if (streamlabs.redeem(viewer, 1, event))
+        {
+            viewer.charge(streamlabs.getCost());
+            return;
+        }
+
         if (sender.equalsIgnoreCase("lantheos"))
             bot.replyMessage(event, sender, " - no scary messages that don't exist.");
         else bot.replyMessage(event, sender, "sorry, that's not a valid reward. The valid ones are: "

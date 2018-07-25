@@ -31,6 +31,8 @@ public class StreamlabsReward extends Reward
                     return bot.getStreamLabs().sendMeow(v.getUsername());
                 case "alert":
                     return bot.getStreamLabs().sendBoo(v.getUsername());
+                case "fail":
+                    return bot.getStreamLabs().sendFail(v.getUsername());
                 case "me":
                     switch (v.getUsername())
                     {

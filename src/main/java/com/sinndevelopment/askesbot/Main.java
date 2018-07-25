@@ -66,6 +66,11 @@ public class Main
         pircBotX.stopBotReconnect();
     }
 
+    public static PircBotX getPircBotX()
+    {
+        return pircBotX;
+    }
+
     public static void startTT()
     {
         timer = null;

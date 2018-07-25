@@ -1,6 +1,7 @@
 package com.sinndevelopment.askesbot.bot;
 
 import com.google.common.collect.ImmutableMap;
+import com.sinndevelopment.askesbot.Main;
 import com.sinndevelopment.askesbot.commands.*;
 import com.sinndevelopment.askesbot.data.TokenLogger;
 import com.sinndevelopment.askesbot.data.Viewer;
@@ -10,6 +11,7 @@ import org.pircbotx.cap.EnableCapHandler;
 import org.pircbotx.exception.IrcException;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
+import org.pircbotx.hooks.events.PingEvent;
 import org.pircbotx.hooks.events.UnknownEvent;
 import org.pircbotx.hooks.types.GenericMessageEvent;
 
@@ -116,6 +118,11 @@ public class AskesBot extends ListenerAdapter
         capHandler.getCaps().forEach(
                 c -> { if(c.getTypeFlag().equalsIgnoreCase(spacesSplit[1])) c.handle(); }
         );
+    }
+
+    @Override
+    public void onPing(PingEvent event) throws Exception {
+        Main.getPircBotX().sendRaw().rawLineNow(String.format("PONG %s\r\n", event.getPingValue()));
     }
 
     @Override
